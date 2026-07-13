@@ -28,6 +28,28 @@ def download_file(key: str, local_path: str | Path) -> None:
     _client.download_file(BUCKET_NAME, key, str(local_path))
 
 
+def read_bytes(key: str) -> bytes:
+    """Return an object's raw bytes without touching local disk."""
+    resp = _client.get_object(Bucket=BUCKET_NAME, Key=key)
+    return resp["Body"].read()
+
+
+def read_text(key: str, encoding: str = "utf-8") -> str:
+    """Return an object's contents decoded as text (lenient on bad bytes)."""
+    return read_bytes(key).decode(encoding, errors="replace")
+
+
+def put_text(key: str, text: str, content_type: str = "text/plain") -> str:
+    """Write a string directly to S3 (used for processed/derived outputs)."""
+    _client.put_object(
+        Bucket=BUCKET_NAME,
+        Key=key,
+        Body=text.encode("utf-8"),
+        ContentType=content_type,
+    )
+    return key
+
+
 def list_objects(prefix: str) -> list[str]:
     paginator = _client.get_paginator("list_objects_v2")
     keys = []

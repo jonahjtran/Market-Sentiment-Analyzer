@@ -23,23 +23,32 @@ TICKERS = [
 SCRATCH_DIR = Path("/tmp/edgar_10k")
 
 
-def _load_ticker_to_cik() -> dict[str, int]:
+def load_ticker_to_cik() -> dict[str, int]:
     resp = requests.get(TICKER_CIK_URL, headers=HEADERS, timeout=30)
     resp.raise_for_status()
     data = resp.json()
     return {row["ticker"]: row["cik_str"] for row in data.values()}
 
 
-def _latest_10k_filing(cik: int) -> tuple[str, str] | None:
+# Backwards-compatible alias (kept so existing callers keep working).
+_load_ticker_to_cik = load_ticker_to_cik
+
+
+def latest_filing(cik: int, form: str = "10-K") -> tuple[str, str] | None:
+    """Return (accession, primary_document) for the most recent filing of `form`."""
     resp = requests.get(SUBMISSIONS_URL.format(cik=cik), headers=HEADERS, timeout=30)
     resp.raise_for_status()
     recent = resp.json()["filings"]["recent"]
-    for form, accession, doc in zip(
+    for filed_form, accession, doc in zip(
         recent["form"], recent["accessionNumber"], recent["primaryDocument"]
     ):
-        if form == "10-K":
+        if filed_form == form:
             return accession, doc
     return None
+
+
+def _latest_10k_filing(cik: int) -> tuple[str, str] | None:
+    return latest_filing(cik, form="10-K")
 
 
 def fetch_and_upload_10k(ticker: str, cik: int) -> str | None:
