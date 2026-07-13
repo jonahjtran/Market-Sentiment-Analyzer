@@ -98,6 +98,7 @@ Since output is qualitative/LLM-reasoned rather than a deterministic numeric sig
 | Data processing | Apache Spark | In-memory batch processing / ingestion pipeline |
 | Data processing | Apache Hadoop / HDFS | Disk-based storage for large batch jobs |
 | Graph database | Neo4j (Cypher) | Entity/relationship storage and traversal queries |
+| Graph hosting | Neo4j AuraDB (Free tier) | Managed Neo4j instance — no self-hosted infra (EC2/Docker) needed for v1 |
 | RAG orchestration | LangChain / LlamaIndex | Query interface, retrieval-augmented reasoning |
 | Flat RAG baseline | ChromaDB or Pinecone | Vector similarity search, used as the comparison baseline |
 | Price data | Polygon.io | Intraday price/volume around earnings windows |
@@ -226,7 +227,8 @@ Reference doc for Claude CLI. Execute in order. Each phase should be a working, 
 ## Phase 0 — Environment Setup
 
 - [ ] Create S3 bucket(s) with prefixes: `/filings/`, `/transcripts/`, `/etf-holdings/`
-- [ ] Provision Neo4j instance (AuraDB free tier is sufficient for v1 — do NOT set up Hadoop/HDFS yet)
+- [ ] Provision Neo4j AuraDB instance (Free tier — console.neo4j.io; managed, no EC2/self-hosting needed for v1; do NOT set up Hadoop/HDFS yet)
+- [ ] Save AuraDB connection URI, username, password to `.env` (shown only once at creation — download the credentials file)
 - [ ] Init Python project
 - [ ] Install deps: `neo4j`, `langchain` (or `llama-index`), `chromadb` (or `pinecone-client`), `boto3`
 - [ ] Set up `.env` for API keys (Anthropic/OpenAI, Neo4j URI/creds, S3 creds)
