@@ -2,6 +2,9 @@ import os
 from pathlib import Path
 
 import boto3
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BUCKET_NAME = os.environ["S3_BUCKET_NAME"]
 
