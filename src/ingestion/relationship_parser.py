@@ -21,7 +21,7 @@ from src.ingestion.s3_client import list_objects, read_text
 load_dotenv()
 
 MODEL = "claude-sonnet-5"
-MAX_TOKENS = 2000
+MAX_TOKENS = 8000
 
 # Edge types the parser is allowed to emit for filing-derived relationships.
 VALID_RELATIONSHIPS = {"SUPPLIES_TO", "SUPPLIED_BY", "COMPETES_WITH"}
@@ -97,7 +97,8 @@ def extract_relationships(ticker: str, text: str) -> list[dict]:
         max_tokens=MAX_TOKENS,
         messages=[{"role": "user", "content": prompt}],
     )
-    rows = _parse_json_array(message.content[0].text)
+    text_block = next(b for b in message.content if b.type == "text")
+    rows = _parse_json_array(text_block.text)
 
     triples: list[dict] = []
     for row in rows:

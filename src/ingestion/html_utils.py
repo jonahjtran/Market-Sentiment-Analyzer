@@ -9,6 +9,7 @@ import html
 import re
 
 _SCRIPT_STYLE = re.compile(r"<(script|style)\b[^>]*>.*?</\1>", re.IGNORECASE | re.DOTALL)
+_IX_HEADER = re.compile(r"<ix:header\b.*?</ix:header>", re.IGNORECASE | re.DOTALL)
 _TAG = re.compile(r"<[^>]+>")
 _WS = re.compile(r"[ \t\r\f\v]+")
 _BLANK_LINES = re.compile(r"\n\s*\n\s*")
@@ -31,7 +32,8 @@ RELATIONSHIP_KEYWORDS = (
 
 def html_to_text(raw: str) -> str:
     """Strip HTML markup and collapse whitespace into readable plain text."""
-    text = _SCRIPT_STYLE.sub(" ", raw)
+    text = _IX_HEADER.sub(" ", raw)
+    text = _SCRIPT_STYLE.sub(" ", text)
     text = _TAG.sub(" ", text)
     text = html.unescape(text)
     text = _WS.sub(" ", text)
