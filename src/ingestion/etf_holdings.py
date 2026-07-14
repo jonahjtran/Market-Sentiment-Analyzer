@@ -10,7 +10,7 @@ from pathlib import Path
 
 import requests
 
-from src.ingestion.s3_client import upload_file
+from src.ingestion.s3_client import key_for, object_exists, upload_file
 
 # iShares/State Street expose a public CSV export per fund. These URLs are the
 # "download holdings" links off each fund's product page; they occasionally
@@ -39,6 +39,12 @@ SCRATCH_DIR = Path("/tmp/etf_holdings")
 
 
 def fetch_and_upload_holdings(etf: str, url: str) -> str | None:
+    key_name = f"{etf}_holdings.csv"
+    key = key_for("etf_holdings", key_name)
+    if object_exists(key):
+        print(f"[skip] {etf}: {key} already in S3")
+        return key
+
     try:
         resp = requests.get(url, headers=HEADERS, timeout=60)
         resp.raise_for_status()
@@ -51,10 +57,10 @@ def fetch_and_upload_holdings(etf: str, url: str) -> str | None:
         return None
 
     SCRATCH_DIR.mkdir(parents=True, exist_ok=True)
-    local_path = SCRATCH_DIR / f"{etf}_holdings.csv"
+    local_path = SCRATCH_DIR / key_name
     local_path.write_bytes(resp.content)
 
-    key = upload_file(local_path, "etf_holdings", key_name=f"{etf}_holdings.csv")
+    key = upload_file(local_path, "etf_holdings", key_name=key_name)
     print(f"[ok] {etf}: uploaded {key} ({len(resp.content):,} bytes)")
     return key
 

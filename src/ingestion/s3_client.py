@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 import boto3
+from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -17,11 +18,29 @@ PREFIXES = {
 _client = boto3.client("s3", region_name=os.environ.get("AWS_REGION", "us-east-1"))
 
 
-def upload_file(local_path: str | Path, prefix: str, key_name: str | None = None) -> str:
+def object_exists(key: str) -> bool:
+    try:
+        _client.head_object(Bucket=BUCKET_NAME, Key=key)
+        return True
+    except ClientError as exc:
+        if exc.response["Error"]["Code"] in ("404", "NoSuchKey"):
+            return False
+        raise
+
+
+def upload_file(
+    local_path: str | Path, prefix: str, key_name: str | None = None, overwrite: bool = False
+) -> str:
     key_name = key_name or Path(local_path).name
     key = PREFIXES[prefix] + key_name
+    if not overwrite and object_exists(key):
+        return key
     _client.upload_file(str(local_path), BUCKET_NAME, key)
     return key
+
+
+def key_for(prefix: str, key_name: str) -> str:
+    return PREFIXES[prefix] + key_name
 
 
 def download_file(key: str, local_path: str | Path) -> None:

@@ -5,7 +5,7 @@ from pathlib import Path
 
 import requests
 
-from src.ingestion.s3_client import upload_file
+from src.ingestion.s3_client import key_for, object_exists, upload_file
 
 SEC_USER_AGENT = "Market Sentiment Analyzer jonahjtran@gmail.com"
 HEADERS = {"User-Agent": SEC_USER_AGENT}
@@ -52,24 +52,36 @@ def _latest_10k_filing(cik: int) -> tuple[str, str] | None:
 
 
 def fetch_and_upload_10k(ticker: str, cik: int) -> str | None:
-    filing = _latest_10k_filing(cik)
+    # Foreign private issuers (e.g. TSM, ASML) file an annual 20-F instead of
+    # a 10-K, so fall back to that form before giving up.
+    form = "10-K"
+    filing = latest_filing(cik, form=form)
     if filing is None:
-        print(f"[skip] {ticker}: no 10-K found")
+        form = "20-F"
+        filing = latest_filing(cik, form=form)
+    if filing is None:
+        print(f"[skip] {ticker}: no 10-K or 20-F found")
         return None
     accession, doc = filing
     accession_nodash = accession.replace("-", "")
-    doc_url = ARCHIVE_URL.format(cik=cik, accession_nodash=accession_nodash, doc=doc)
 
+    suffix = Path(doc).suffix or ".htm"
+    key_name = f"{ticker}_10K{suffix}"
+    key = key_for("filings", key_name)
+    if object_exists(key):
+        print(f"[skip] {ticker}: {key} already in S3")
+        return key
+
+    doc_url = ARCHIVE_URL.format(cik=cik, accession_nodash=accession_nodash, doc=doc)
     resp = requests.get(doc_url, headers=HEADERS, timeout=30)
     resp.raise_for_status()
 
     SCRATCH_DIR.mkdir(parents=True, exist_ok=True)
-    suffix = Path(doc).suffix or ".htm"
-    local_path = SCRATCH_DIR / f"{ticker}_10K{suffix}"
+    local_path = SCRATCH_DIR / key_name
     local_path.write_bytes(resp.content)
 
-    key = upload_file(local_path, "filings", key_name=f"{ticker}_10K{suffix}")
-    print(f"[ok] {ticker}: uploaded {key}")
+    key = upload_file(local_path, "filings", key_name=key_name)
+    print(f"[ok] {ticker}: uploaded {key} (form {form})")
     return key
 
 

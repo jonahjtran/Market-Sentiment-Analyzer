@@ -18,7 +18,7 @@ from src.ingestion.edgar_client import (
     load_ticker_to_cik,
     latest_filing,
 )
-from src.ingestion.s3_client import upload_file
+from src.ingestion.s3_client import key_for, object_exists, upload_file
 
 INDEX_URL = "https://www.sec.gov/Archives/edgar/data/{cik}/{accession_nodash}/index.json"
 ARCHIVE_URL = "https://www.sec.gov/Archives/edgar/data/{cik}/{accession_nodash}/{doc}"
@@ -48,25 +48,35 @@ def _earnings_exhibit(cik: int, accession_nodash: str, primary_doc: str) -> str:
 
 
 def fetch_and_upload_earnings(ticker: str, cik: int) -> str | None:
+    # Foreign private issuers (e.g. TSM, ASML) don't file 8-Ks; their interim
+    # earnings releases go out as 6-Ks instead.
     filing = latest_filing(cik, form="8-K")
     if filing is None:
-        print(f"[skip] {ticker}: no 8-K found")
+        filing = latest_filing(cik, form="6-K")
+    if filing is None:
+        print(f"[skip] {ticker}: no 8-K or 6-K found")
         return None
     accession, primary_doc = filing
     accession_nodash = accession.replace("-", "")
 
     doc = _earnings_exhibit(cik, accession_nodash, primary_doc)
-    doc_url = ARCHIVE_URL.format(cik=cik, accession_nodash=accession_nodash, doc=doc)
 
+    suffix = Path(doc).suffix or ".htm"
+    key_name = f"{ticker}_earnings{suffix}"
+    key = key_for("transcripts", key_name)
+    if object_exists(key):
+        print(f"[skip] {ticker}: {key} already in S3")
+        return key
+
+    doc_url = ARCHIVE_URL.format(cik=cik, accession_nodash=accession_nodash, doc=doc)
     resp = requests.get(doc_url, headers=HEADERS, timeout=30)
     resp.raise_for_status()
 
     SCRATCH_DIR.mkdir(parents=True, exist_ok=True)
-    suffix = Path(doc).suffix or ".htm"
-    local_path = SCRATCH_DIR / f"{ticker}_earnings{suffix}"
+    local_path = SCRATCH_DIR / key_name
     local_path.write_bytes(resp.content)
 
-    key = upload_file(local_path, "transcripts", key_name=f"{ticker}_earnings{suffix}")
+    key = upload_file(local_path, "transcripts", key_name=key_name)
     print(f"[ok] {ticker}: uploaded {key}")
     return key
 
