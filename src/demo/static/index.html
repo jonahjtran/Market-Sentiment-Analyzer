@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Graph RAG vs Flat RAG</title>
+<style>
+  :root {
+    --bg: #0b0e14;
+    --panel: #131722;
+    --border: #232838;
+    --text: #e6e9f0;
+    --muted: #8890a4;
+    --graph: #5b8def;
+    --flat: #e0a45b;
+    --mono: "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    padding: 24px;
+  }
+  h1 { font-size: 18px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .controls {
+    display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
+    align-items: center;
+  }
+  select, input, button {
+    background: var(--panel); color: var(--text); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 10px; font-size: 13px; font-family: inherit;
+  }
+  select { min-width: 260px; }
+  input[type=text] { flex: 1; min-width: 200px; }
+  input[type=text].question { flex: 3; }
+  button {
+    background: var(--graph); color: white; border: none; cursor: pointer;
+    font-weight: 600;
+  }
+  button:disabled { opacity: 0.5; cursor: default; }
+  .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 900px) { .columns { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; min-height: 200px;
+  }
+  .panel h2 {
+    font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;
+    margin: 0 0 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .graph h2 .dot { background: var(--graph); }
+  .flat h2 .dot { background: var(--flat); }
+  .answer { white-space: pre-wrap; font-size: 13.5px; line-height: 1.55; }
+  .meta {
+    margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--muted); font-family: var(--mono);
+  }
+  .meta summary { cursor: pointer; color: var(--muted); }
+  .edge { padding: 2px 0; }
+  .placeholder { color: var(--muted); font-size: 13px; }
+  .loading { color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+  <h1>Graph RAG vs Flat RAG</h1>
+  <div class="sub">Same question, same underlying filings/transcripts. Left uses Neo4j relationship traversal; right uses plain vector similarity search.</div>
+
+  <div class="controls">
+    <select id="presetQuestion"></select>
+    <input type="text" id="question" class="question" placeholder="Or type your own question...">
+    <input type="text" id="ticker" value="NVDA" style="width:80px" title="Trigger ticker">
+    <input type="text" id="hops" value="2" style="width:50px" title="Hops">
+    <button id="run">Run</button>
+  </div>
+
+  <div class="columns">
+    <div class="panel graph">
+      <h2><span class="dot"></span>Graph RAG</h2>
+      <div id="graphAnswer" class="placeholder">Run a question to see the graph-RAG answer.</div>
+      <details class="meta" id="graphMeta" style="display:none">
+        <summary id="graphMetaSummary"></summary>
+        <div id="graphEdges"></div>
+      </details>
+    </div>
+    <div class="panel flat">
+      <h2><span class="dot"></span>Flat RAG (baseline)</h2>
+      <div id="flatAnswer" class="placeholder">Run a question to see the flat-RAG answer.</div>
+      <details class="meta" id="flatMeta" style="display:none">
+        <summary id="flatMetaSummary"></summary>
+        <div id="flatRetrieved"></div>
+      </details>
+    </div>
+  </div>
+
+<script>
+const presetSelect = document.getElementById('presetQuestion');
+const questionInput = document.getElementById('question');
+const tickerInput = document.getElementById('ticker');
+const hopsInput = document.getElementById('hops');
+const runBtn = document.getElementById('run');
+
+fetch('/api/questions').then(r => r.json()).then(qs => {
+  const custom = document.createElement('option');
+  custom.value = '';
+  custom.textContent = '(custom question below)';
+  presetSelect.appendChild(custom);
+  qs.forEach(q => {
+    const opt = document.createElement('option');
+    opt.value = q;
+    opt.textContent = q;
+    presetSelect.appendChild(opt);
+  });
+  presetSelect.selectedIndex = 1;
+  questionInput.value = qs[0] || '';
+});
+
+presetSelect.addEventListener('change', () => {
+  if (presetSelect.value) questionInput.value = presetSelect.value;
+});
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+async function run() {
+  const question = questionInput.value.trim();
+  if (!question) return;
+
+  runBtn.disabled = true;
+  runBtn.textContent = 'Running...';
+  document.getElementById('graphAnswer').innerHTML = '<div class="loading">Retrieving subgraph and reasoning...</div>';
+  document.getElementById('flatAnswer').innerHTML = '<div class="loading">Running vector search...</div>';
+  document.getElementById('graphMeta').style.display = 'none';
+  document.getElementById('flatMeta').style.display = 'none';
+
+  try {
+    const resp = await fetch('/api/compare', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        question,
+        ticker: tickerInput.value.trim() || 'NVDA',
+        hops: parseInt(hopsInput.value, 10) || 2,
+      }),
+    });
+    const data = await resp.json();
+    if (data.error) throw new Error(data.error);
+
+    document.getElementById('graphAnswer').innerHTML = `<div class="answer">${escapeHtml(data.graph.answer)}</div>`;
+    document.getElementById('flatAnswer').innerHTML = `<div class="answer">${escapeHtml(data.flat.answer)}</div>`;
+
+    const graphMeta = document.getElementById('graphMeta');
+    document.getElementById('graphMetaSummary').textContent =
+      `${data.graph.edges.length} edges retrieved, ${data.graph.entities_reached.length} entities reached`;
+    document.getElementById('graphEdges').innerHTML = data.graph.edges
+      .map(e => `<div class="edge">${escapeHtml(e.source)} -${escapeHtml(e.rel_type)}-> ${escapeHtml(e.target)} (confidence=${e.confidence})</div>`)
+      .join('');
+    graphMeta.style.display = 'block';
+
+    const flatMeta = document.getElementById('flatMeta');
+    document.getElementById('flatMetaSummary').textContent = `${data.flat.retrieved.length} chunks retrieved`;
+    document.getElementById('flatRetrieved').innerHTML = data.flat.retrieved
+      .map(r => `<div class="edge">[${escapeHtml(r.ticker)}] ${escapeHtml(r.source_doc)}</div>`)
+      .join('');
+    flatMeta.style.display = 'block';
+  } catch (err) {
+    document.getElementById('graphAnswer').innerHTML = `<div class="placeholder">Error: ${escapeHtml(err.message)}</div>`;
+    document.getElementById('flatAnswer').innerHTML = '';
+  } finally {
+    runBtn.disabled = false;
+    runBtn.textContent = 'Run';
+  }
+}
+
+runBtn.addEventListener('click', run);
+questionInput.addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+</script>
+</body>
+</html>

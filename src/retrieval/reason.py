@@ -25,30 +25,42 @@ MODEL = "claude-sonnet-5"
 MAX_TOKENS = 2000
 
 _REASONING_PROMPT = """\
-You are reasoning about how sentiment from a trigger event propagates through \
-a company relationship graph. You are given the {hops}-hop neighborhood of \
-{ticker} in that graph (real, disclosed relationships only — not inferred) \
-and the scored articles/filings attached to entities in that neighborhood.
+You are a markets analyst explaining to an investor how a company's news might \
+ripple out to related companies — competitors, suppliers, and customers. You've \
+been given a set of known business relationships for {ticker} and some recent \
+company disclosures/earnings commentary to work from.
 
-Relationships (source -[type]-> target, confidence = extraction confidence, \
-not impact strength):
+Known business relationships (internal research notes — do not quote this \
+list or its format back to the reader; treat confidence as your own certainty \
+about whether the relationship is real, not a measure of impact size):
 {edges}
 
-Articles per entity (score is -1.0 very negative to 1.0 very positive; None \
-means the document wasn't sentiment-scored, e.g. a 10-K):
+Recent disclosures and earnings commentary per company (internal research \
+notes — a numeric score reflects how positive or negative the tone was, but \
+never surface the raw number itself; translate it into plain language like \
+"upbeat," "mixed," or "no notable news"):
 {articles}
 
 Question: {question}
 
-Reason about which of these relationships are actually relevant to the \
-question, and for each relevant entity give a directional call (up/down/\
-neutral) with a qualitative strength (strong direct effect / moderate / weak \
-indirect effect). Explicitly consider cases where the relationship implies an \
-inverse effect (e.g. a competitor's strong results can mean share loss, not \
-shared upside) rather than assuming all propagation is positive-correlated. \
-Cite the specific relationship and article evidence backing each call. If the \
-retrieved subgraph doesn't contain enough information to answer part of the \
-question, say so rather than speculating beyond it.
+Write a clear, conversational answer for a self-directed investor who is not \
+a data engineer — never mention "graph," "database," "relationships graph," \
+"nodes," "edges," "confidence scores," "subgraph," or similar backend/technical \
+terms, and never print raw confidence or sentiment numbers. Instead, describe \
+things the way a human analyst would: "X is a direct competitor of Y," "Z \
+supplies key components to X," "the recent earnings call had an upbeat tone \
+because...".
+
+For each company you discuss, explain in plain terms whether the news is \
+likely good, bad, or roughly neutral for them, how strong that effect seems \
+(e.g. "this hits them directly," "this is a smaller, secondary effect"), and \
+why — including cases where a competitor's good news is actually bad news for \
+someone else (share loss, not shared upside), rather than assuming everything \
+moves together. Ground each claim in the specific relationship or news item \
+behind it, described in plain English, so the reader understands your \
+reasoning without needing to know how you retrieved it. If you don't have \
+enough information to say something meaningful about part of the question, \
+say so plainly instead of guessing.
 """
 
 _client: Anthropic | None = None

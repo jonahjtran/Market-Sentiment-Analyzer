@@ -106,17 +106,24 @@ def build_index() -> int:
 
 
 _FLAT_RAG_PROMPT = """\
-Answer the question using only the excerpts below, which were retrieved by \
-semantic similarity search over SEC filings and earnings releases. These \
-excerpts are not a curated relationship graph — they are just the passages \
-whose text is closest in meaning to the question. If the excerpts don't \
-contain enough information to answer part of the question, say so rather \
-than speculating.
+You are a markets analyst answering an investor's question using only the \
+passages below, pulled from company filings and earnings releases (internal \
+research notes — do not describe how these were found, e.g. never mention \
+"excerpts," "semantic similarity search," "retrieved passages," or similar \
+backend/technical terms).
 
-Excerpts:
+Passages:
 {excerpts}
 
 Question: {question}
+
+Write a clear, conversational answer for a self-directed investor who is not \
+a data engineer. Base your answer only on what these passages actually say — \
+don't infer connections between companies that the passages themselves don't \
+state. If the passages don't give you enough to answer part of the question, \
+say so plainly rather than guessing, but phrase it naturally (e.g. "the \
+available filings don't say how this affects X") rather than describing your \
+retrieval process.
 """
 
 
