@@ -1,5 +1,6 @@
 """Pull latest 10-K filings from SEC EDGAR and upload the raw documents to S3."""
 
+import sys
 import time
 from pathlib import Path
 
@@ -51,7 +52,7 @@ def _latest_10k_filing(cik: int) -> tuple[str, str] | None:
     return latest_filing(cik, form="10-K")
 
 
-def fetch_and_upload_10k(ticker: str, cik: int) -> str | None:
+def fetch_and_upload_10k(ticker: str, cik: int, overwrite: bool = False) -> str | None:
     # Foreign private issuers (e.g. TSM, ASML) file an annual 20-F instead of
     # a 10-K, so fall back to that form before giving up.
     form = "10-K"
@@ -68,7 +69,7 @@ def fetch_and_upload_10k(ticker: str, cik: int) -> str | None:
     suffix = Path(doc).suffix or ".htm"
     key_name = f"{ticker}_10K{suffix}"
     key = key_for("filings", key_name)
-    if object_exists(key):
+    if not overwrite and object_exists(key):
         print(f"[skip] {ticker}: {key} already in S3")
         return key
 
@@ -80,21 +81,23 @@ def fetch_and_upload_10k(ticker: str, cik: int) -> str | None:
     local_path = SCRATCH_DIR / key_name
     local_path.write_bytes(resp.content)
 
-    key = upload_file(local_path, "filings", key_name=key_name)
+    key = upload_file(
+        local_path, "filings", key_name=key_name, overwrite=overwrite, metadata={"form": form}
+    )
     print(f"[ok] {ticker}: uploaded {key} (form {form})")
     return key
 
 
-def main() -> None:
+def main(overwrite: bool = False) -> None:
     ticker_to_cik = _load_ticker_to_cik()
     for ticker in TICKERS:
         cik = ticker_to_cik.get(ticker)
         if cik is None:
             print(f"[skip] {ticker}: CIK not found")
             continue
-        fetch_and_upload_10k(ticker, cik)
+        fetch_and_upload_10k(ticker, cik, overwrite=overwrite)
         time.sleep(0.2)  # stay well under SEC's rate limit
 
 
 if __name__ == "__main__":
-    main()
+    main(overwrite="--overwrite" in sys.argv)

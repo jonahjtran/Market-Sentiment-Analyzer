@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 
 from src.ingestion.edgar_client import TICKERS
 from src.ingestion.html_utils import html_to_text, relationship_windows
-from src.ingestion.s3_client import list_objects, read_text
+from src.ingestion.s3_client import get_metadata, list_objects, read_text
 
 load_dotenv()
 
@@ -136,8 +136,32 @@ def parse_all_filings() -> list[dict]:
     """Parse every filing currently under the `filings/` prefix in S3."""
     triples: list[dict] = []
     for key in list_objects("filings"):
+        if key.endswith("/"):
+            continue
         triples.extend(parse_filing_from_s3(key))
     return triples
+
+
+def list_filing_articles() -> list[dict]:
+    """Article-node metadata for every filing in S3 (no sentiment — see PRD
+    note: financial statements are factual, not sentiment-bearing; only
+    earnings releases/news get scored, in score_sentiment.py).
+
+    doc_type is read back from the object's stored `form` metadata (set at
+    upload time in edgar_client.py) rather than assumed, since a filer may
+    have fallen back from 10-K to 20-F.
+    """
+    return [
+        {
+            "ticker": _ticker_from_key(key),
+            "source_doc": key,
+            "doc_type": get_metadata(key).get("form", "unknown"),
+            "sentiment_score": None,
+            "summary": None,
+        }
+        for key in list_objects("filings")
+        if not key.endswith("/") and _ticker_from_key(key)
+    ]
 
 
 if __name__ == "__main__":

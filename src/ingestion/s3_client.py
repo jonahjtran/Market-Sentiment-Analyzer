@@ -29,18 +29,29 @@ def object_exists(key: str) -> bool:
 
 
 def upload_file(
-    local_path: str | Path, prefix: str, key_name: str | None = None, overwrite: bool = False
+    local_path: str | Path,
+    prefix: str,
+    key_name: str | None = None,
+    overwrite: bool = False,
+    metadata: dict[str, str] | None = None,
 ) -> str:
     key_name = key_name or Path(local_path).name
     key = PREFIXES[prefix] + key_name
     if not overwrite and object_exists(key):
         return key
-    _client.upload_file(str(local_path), BUCKET_NAME, key)
+    extra_args = {"Metadata": metadata} if metadata else None
+    _client.upload_file(str(local_path), BUCKET_NAME, key, ExtraArgs=extra_args)
     return key
 
 
 def key_for(prefix: str, key_name: str) -> str:
     return PREFIXES[prefix] + key_name
+
+
+def get_metadata(key: str) -> dict[str, str]:
+    """Return the custom metadata (e.g. actual SEC form type) stored on an object."""
+    resp = _client.head_object(Bucket=BUCKET_NAME, Key=key)
+    return resp.get("Metadata", {})
 
 
 def download_file(key: str, local_path: str | Path) -> None:

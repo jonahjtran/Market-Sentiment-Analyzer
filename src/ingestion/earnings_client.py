@@ -7,6 +7,7 @@ press release filed as Exhibit 99.1 of the quarterly 8-K. That exhibit carries
 the results commentary we run sentiment scoring over in Phase 3.
 """
 
+import sys
 import time
 from pathlib import Path
 
@@ -47,12 +48,14 @@ def _earnings_exhibit(cik: int, accession_nodash: str, primary_doc: str) -> str:
     return primary_doc
 
 
-def fetch_and_upload_earnings(ticker: str, cik: int) -> str | None:
+def fetch_and_upload_earnings(ticker: str, cik: int, overwrite: bool = False) -> str | None:
     # Foreign private issuers (e.g. TSM, ASML) don't file 8-Ks; their interim
     # earnings releases go out as 6-Ks instead.
-    filing = latest_filing(cik, form="8-K")
+    form = "8-K"
+    filing = latest_filing(cik, form=form)
     if filing is None:
-        filing = latest_filing(cik, form="6-K")
+        form = "6-K"
+        filing = latest_filing(cik, form=form)
     if filing is None:
         print(f"[skip] {ticker}: no 8-K or 6-K found")
         return None
@@ -64,7 +67,7 @@ def fetch_and_upload_earnings(ticker: str, cik: int) -> str | None:
     suffix = Path(doc).suffix or ".htm"
     key_name = f"{ticker}_earnings{suffix}"
     key = key_for("transcripts", key_name)
-    if object_exists(key):
+    if not overwrite and object_exists(key):
         print(f"[skip] {ticker}: {key} already in S3")
         return key
 
@@ -76,21 +79,23 @@ def fetch_and_upload_earnings(ticker: str, cik: int) -> str | None:
     local_path = SCRATCH_DIR / key_name
     local_path.write_bytes(resp.content)
 
-    key = upload_file(local_path, "transcripts", key_name=key_name)
-    print(f"[ok] {ticker}: uploaded {key}")
+    key = upload_file(
+        local_path, "transcripts", key_name=key_name, overwrite=overwrite, metadata={"form": form}
+    )
+    print(f"[ok] {ticker}: uploaded {key} (form {form})")
     return key
 
 
-def main() -> None:
+def main(overwrite: bool = False) -> None:
     ticker_to_cik = load_ticker_to_cik()
     for ticker in TICKERS:
         cik = ticker_to_cik.get(ticker)
         if cik is None:
             print(f"[skip] {ticker}: CIK not found")
             continue
-        fetch_and_upload_earnings(ticker, cik)
+        fetch_and_upload_earnings(ticker, cik, overwrite=overwrite)
         time.sleep(0.3)  # stay under SEC's 10 req/s limit (two calls per ticker)
 
 
 if __name__ == "__main__":
-    main()
+    main(overwrite="--overwrite" in sys.argv)
