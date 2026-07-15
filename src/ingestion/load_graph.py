@@ -11,6 +11,7 @@ Run: python -m src.ingestion.load_graph
 
 import json
 import os
+import re
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -19,6 +20,35 @@ from neo4j import GraphDatabase
 from src.ingestion.s3_client import read_text
 
 load_dotenv()
+
+# Filing-derived triples name companies in free text ("Intel Corporation",
+# "Intel", "Intel Corp.") while Article nodes are keyed by ticker. Left
+# unnormalized, MERGE (which matches on exact name) splits one real company
+# into several Entity nodes and orphans them from their articles/edges.
+# Strip common corporate suffixes so name variants collapse onto one node.
+_CORP_SUFFIXES_RE = re.compile(
+    r",?\s+(inc\.?|incorporated|corp\.?|corporation|co\.?|company|"
+    r"ltd\.?|limited|llc|l\.l\.c\.?|plc|group|holdings?|"
+    r"n\.v\.?|s\.a\.?)\.?\s*$",
+    re.IGNORECASE,
+)
+
+
+def canonical_name(name: str) -> str:
+    """Collapse company name variants to one canonical string.
+
+    Tickers (all-caps, no spaces, already the canonical form used by
+    Article nodes) pass through untouched. Strips corporate suffixes
+    repeatedly (e.g. "Foo Holdings, Inc." -> "Foo") and normalizes case.
+    """
+    name = name.strip()
+    if name.isupper() and " " not in name:
+        return name
+    prev = None
+    while prev != name:
+        prev = name
+        name = _CORP_SUFFIXES_RE.sub("", name).strip()
+    return name
 
 LOCAL_TRIPLES = Path("/tmp/ingest_from_s3/relationship_triples.json")
 S3_TRIPLES_KEY = "processed/relationship_triples.json"
@@ -78,6 +108,7 @@ def write_triples(driver, triples: list[dict]) -> None:
         rel = t["relationship"]
         if rel not in VALID_RELATIONSHIPS:
             raise ValueError(f"Unknown relationship type: {rel!r}")
+        t = {**t, "source": canonical_name(t["source"]), "target": canonical_name(t["target"])}
         by_type.setdefault(rel, []).append(t)
 
     with driver.session() as session:
@@ -88,6 +119,7 @@ def write_triples(driver, triples: list[dict]) -> None:
 
 
 def write_articles(driver, articles: list[dict]) -> None:
+    articles = [{**a, "ticker": canonical_name(a["ticker"])} for a in articles]
     with driver.session() as session:
         session.run(_ARTICLE_MERGE_QUERY, rows=articles)
     print(f"[done] merged {len(articles)} Article nodes")
