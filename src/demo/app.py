@@ -9,18 +9,26 @@ Run: python -m src.demo.app
 Then open http://localhost:5050
 """
 
+import asyncio
 import os
+import uuid
 
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, send_from_directory
 from neo4j import GraphDatabase
 
-from src.retrieval import flat_rag, reason
+from src.retrieval import chat, flat_rag, reason
 from src.retrieval.subgraph import DEFAULT_HOPS
 
 load_dotenv()
 
 app = Flask(__name__, static_folder="static")
+
+# Chat history holds raw Anthropic message content (tool_use/tool_result
+# blocks), which isn't meaningfully round-trippable through client-side JSON,
+# so it's kept server-side per session rather than passed back and forth.
+# In-memory only — fine for a single-process dev server, not for production.
+_chat_sessions: dict[str, list[dict]] = {}
 
 DEFAULT_QUESTIONS = [
     "How does NVDA's earnings affect AMD, TSMC, and data center REITs?",
@@ -79,6 +87,22 @@ def compare():
             },
         }
     )
+
+
+@app.post("/api/chat")
+def chat_endpoint():
+    body = request.get_json(force=True)
+    question = (body.get("question") or "").strip()
+    session_id = body.get("session_id") or str(uuid.uuid4())
+
+    if not question:
+        return jsonify({"error": "question is required"}), 400
+
+    history = _chat_sessions.get(session_id, [])
+    result = asyncio.run(chat.answer_chat(question, history))
+    _chat_sessions[session_id] = result["history"]
+
+    return jsonify({"question": question, "answer": result["answer"], "session_id": session_id})
 
 
 def run() -> None:
