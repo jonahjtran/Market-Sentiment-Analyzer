@@ -12,6 +12,7 @@ Run: python -m src.ingestion.load_graph
 import json
 import os
 import re
+from datetime import datetime, timezone
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -81,6 +82,7 @@ SET r.confidence = row.confidence,
 _ARTICLE_MERGE_QUERY = """
 UNWIND $rows AS row
 MERGE (a:Article {source_doc: row.source_doc})
+ON CREATE SET a.date_added = row.date_added
 SET a.doc_type = row.doc_type,
     a.ticker = row.ticker,
     a.sentiment_score = row.sentiment_score,
@@ -119,7 +121,8 @@ def write_triples(driver, triples: list[dict]) -> None:
 
 
 def write_articles(driver, articles: list[dict]) -> None:
-    articles = [{**a, "ticker": canonical_name(a["ticker"])} for a in articles]
+    now = datetime.now(timezone.utc).isoformat()
+    articles = [{**a, "ticker": canonical_name(a["ticker"]), "date_added": now} for a in articles]
     with driver.session() as session:
         session.run(_ARTICLE_MERGE_QUERY, rows=articles)
     print(f"[done] merged {len(articles)} Article nodes")

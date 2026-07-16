@@ -43,6 +43,24 @@ RETURN e.name AS entity, a.sentiment_score AS score, a.summary AS summary,
        a.source_doc AS source_doc, a.doc_type AS doc_type
 """
 
+# Aggregates sentiment per entity (not per article) so one loud article can't
+# outrank an entity with several moderately-scored ones. article_count rides
+# along so callers/prompts can tell "one spike" apart from "sustained trend."
+_TRENDING_ORDER_CLAUSES = {
+    "up": "avg_score DESC",
+    "down": "avg_score ASC",
+    "most_active": "article_count DESC",
+}
+
+_TRENDING_AGG_QUERY_TEMPLATE = """
+MATCH (a:Article)-[:ABOUT]->(e:Entity)
+WHERE a.sentiment_score IS NOT NULL
+WITH e.name AS entity, avg(a.sentiment_score) AS avg_score, count(a) AS article_count
+RETURN entity, avg_score, article_count
+ORDER BY {order_clause}
+LIMIT $limit
+"""
+
 
 def get_subgraph(driver: Driver, ticker: str, hops: int = DEFAULT_HOPS) -> dict:
     if not isinstance(hops, int) or hops < 1:
@@ -75,6 +93,45 @@ def get_subgraph(driver: Driver, ticker: str, hops: int = DEFAULT_HOPS) -> dict:
             )
 
     return {"center": ticker, "edges": edges, "articles": articles}
+
+
+def get_trending_subgraph(driver: Driver, direction: str = "up", limit: int = 5) -> dict:
+    """Entities with the most notable aggregate sentiment, no trigger entity.
+
+    Used when a question names no specific company (e.g. "what's trending",
+    "what's trending down", "what's getting a lot of coverage"). `direction`
+    is a structured choice the LLM makes from the question's wording rather
+    than the retrieval layer guessing at phrasing:
+      - "up": highest average sentiment score
+      - "down": lowest average sentiment score
+      - "most_active": most articles, regardless of score
+
+    Same {center, edges, articles} shape as get_subgraph (center=None, edges
+    empty) plus a "trending" list of {entity, avg_score, article_count} so
+    callers can distinguish a single spike from a sustained trend.
+    """
+    if direction not in _TRENDING_ORDER_CLAUSES:
+        raise ValueError(f"direction must be one of {sorted(_TRENDING_ORDER_CLAUSES)}, got {direction!r}")
+
+    with driver.session() as session:
+        query = _TRENDING_AGG_QUERY_TEMPLATE.format(order_clause=_TRENDING_ORDER_CLAUSES[direction])
+        trending = [dict(row) for row in session.run(query, limit=limit)]
+
+        entity_names = [row["entity"] for row in trending]
+        articles: dict[str, list[dict]] = {name: [] for name in entity_names}
+        for row in session.run(_ARTICLES_QUERY, names=entity_names):
+            if row["source_doc"] is None:
+                continue
+            articles[row["entity"]].append(
+                {
+                    "score": row["score"],
+                    "summary": row["summary"],
+                    "source_doc": row["source_doc"],
+                    "doc_type": row["doc_type"],
+                }
+            )
+
+    return {"center": None, "direction": direction, "edges": [], "trending": trending, "articles": articles}
 
 
 def run() -> None:

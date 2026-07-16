@@ -5,3 +5,4 @@ anthropic
 requests
 chromadb
 flask
+mcp
