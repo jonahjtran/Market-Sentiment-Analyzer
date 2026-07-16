@@ -27,7 +27,7 @@ app = Flask(__name__, static_folder="static")
 # Chat history holds raw Anthropic message content (tool_use/tool_result
 # blocks), which isn't meaningfully round-trippable through client-side JSON,
 # so it's kept server-side per session rather than passed back and forth.
-# In-memory only — fine for a single-process dev server, not for production.
+# In-memory only, fine for a single-process dev server, not for production.
 _chat_sessions: dict[str, list[dict]] = {}
 
 DEFAULT_QUESTIONS = [

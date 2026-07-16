@@ -1,4 +1,4 @@
-"""Load parsed triples and articles into Neo4j (PRD Phase 2 — Graph Construction).
+"""Load parsed triples and articles into Neo4j (PRD Phase 2, Graph Construction).
 
 Reads the normalized triples and Article records produced by ingest_from_s3.py
 (either the local scratch copy or the `processed/` objects in S3) and MERGEs
@@ -59,7 +59,7 @@ S3_ARTICLES_KEY = "processed/articles.json"
 
 # Must match the edge types in PRD 4.2. Kept as an explicit allowlist because
 # relationship type is interpolated into the Cypher query string below (Cypher
-# has no parameter binding for relationship types) — untrusted values must
+# has no parameter binding for relationship types), untrusted values must
 # never reach that string.
 VALID_RELATIONSHIPS = {
     "SUPPLIES_TO",

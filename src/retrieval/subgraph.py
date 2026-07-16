@@ -1,12 +1,12 @@
-"""N-hop subgraph retrieval (PRD Phase 4 — Graph RAG Query Layer).
+"""N-hop subgraph retrieval (PRD Phase 4, Graph RAG Query Layer).
 
-Given a trigger entity (a ticker, supplied directly — not parsed from free
+Given a trigger entity (a ticker, supplied directly, not parsed from free
 text and not inferred from "most recent article"), pulls the N-hop Entity
 neighborhood plus every Article attached to every entity in that neighborhood.
 
 Hop depth is fixed by the caller, not decided by the LLM (Approach A keeps the
 LLM's judgment scoped to reasoning over the retrieved subgraph, not selecting
-it — PRD 6.3). Articles are not hop-limited: they hang off whichever entities
+it, PRD 6.3). Articles are not hop-limited: they hang off whichever entities
 the hop traversal reaches, and every scored Article for those entities is
 returned so the LLM can weigh all of them itself, rather than the retrieval
 layer picking a "latest" one.

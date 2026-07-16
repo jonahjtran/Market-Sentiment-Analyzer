@@ -7,6 +7,8 @@ press release filed as Exhibit 99.1 of the quarterly 8-K. That exhibit carries
 the results commentary we run sentiment scoring over in Phase 3.
 """
 
+from __future__ import annotations
+
 import sys
 import time
 from pathlib import Path

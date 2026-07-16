@@ -1,0 +1,525 @@
+{
+  "generated_at": "2026-07-16T20:01:42+00:00",
+  "models": {
+    "reason": "claude-sonnet-5",
+    "flat": "claude-sonnet-5",
+    "judge": "claude-sonnet-5"
+  },
+  "summary": {
+    "n": 8,
+    "entity_recall": {
+      "graph": 1.0,
+      "flat": 0.7604166666666666
+    },
+    "retrieval_coverage": {
+      "graph": 1.0,
+      "flat": 0.5520833333333334
+    },
+    "judge_scores": {
+      "graph": {
+        "entity_coverage": 4.875,
+        "correctness": 3.875,
+        "reasoning_depth": 4.375
+      },
+      "flat": {
+        "entity_coverage": 2.5,
+        "correctness": 4.125,
+        "reasoning_depth": 2.5
+      }
+    },
+    "wins": {
+      "graph": 6,
+      "flat": 2,
+      "tie": 0
+    },
+    "judge_win_rate_graph": 0.75
+  },
+  "questions": [
+    {
+      "id": "nvda-exposure",
+      "trigger": "NVDA",
+      "question": "NVIDIA just reported very strong AI GPU demand. Which competitors and suppliers are most exposed to this news, and in which direction?",
+      "expected": [
+        "AMD",
+        "TSM",
+        "AVGO",
+        "INTC"
+      ],
+      "why": "AMD/AVGO/Intel compete; TSMC is the foundry \u2014 none named in the prompt.",
+      "graph": {
+        "answer": "# How NVIDIA's Strong AI GPU Demand Ripples Outward\n\nNVIDIA reporting very strong AI GPU demand is a big deal, and it doesn't stay contained to NVIDIA's own stock. Here's how it likely flows through to the companies connected to it \u2014 starting with the clearest beneficiaries and moving to the ones who should be more worried.\n\n## Suppliers: This Is Good News, and It's Direct\n\n**TSMC (TSM)** is the standout here. TSMC manufactures NVIDIA's chips, and we already have independent confirmation that its business is running hot \u2014 June 2026 revenue was up nearly 68% year-over-year, with first-half revenue up over 35%. That kind of growth is almost certainly being driven by AI/high-performance computing demand, and NVIDIA's commentary reinforces that story rather than contradicting it. This is about as direct a read-through as you get: strong NVIDIA GPU demand means NVIDIA needs more wafers, and TSMC is the primary source. This should be viewed as a clear positive for TSMC, and the effect size here is large \u2014 not a secondary ripple.\n\n**SK Hynix and Micron Technology** both supply memory (HBM) that goes directly into NVIDIA's AI GPU systems. Strong GPU demand typically means strong demand for the high-bandwidth memory that sits right next to it. We don't have fresh earnings commentary from either in this batch, so I can't tell you how their most recent quarter actually looked \u2014 but directionally, this NVIDIA news should be a tailwind for both. This is a real, fairly direct effect, just one I can't size precisely without their own recent disclosures.\n\n**Samsung Electronics** also supplies components to NVIDIA, so the same logic applies \u2014 a positive, though I'd flag Samsung is a bit more of a mixed case since it's *also* a direct competitor to NVIDIA in some product areas. More on that below.\n\n**Hon Hai Precision (Foxconn), Wistron, and Fabrinet** all supply into NVIDIA's hardware and manufacturing chain (server assembly, optical/interconnect components). Strong end demand for NVIDIA GPUs should flow through to more orders for these assemblers and component makers. I don't have recent earnings tone from any of them to confirm this is already showing up in their numbers, but the directional read is positive, and it's a fairly direct dependency since they're built into NVIDIA's physical supply chain.\n\n## Direct Competitors: Good News for NVIDIA, but Not Necessarily Good News for Them\n\nThis is the part where \"the leader is doing great\" doesn't automatically mean the whole group wins \u2014 sometimes it means someone else is losing share.\n\n**AMD** is NVIDIA's most direct head-to-head competitor in GPUs. There are two ways to read strong NVIDIA demand for AMD: either the overall AI compute market is expanding so fast that there's room for both, or NVIDIA is pulling share and demand at AMD's expense. Without a clear signal from AMD's own recent numbers (their latest disclosure was just routine executive-compensation news, with no earnings substance), I can't tell you which of those two dynamics is dominating right now. What I can say is that this is a meaningful, direct effect one way or the other \u2014 it's just genuinely ambiguous from what's in front of me, and I'd treat it as a \"watch closely\" rather than assume it's automatically bad or automatically neutral for AMD.\n\n**Intel** competes with NVIDIA as well, primarily outside of GPUs, so the read-through is weaker and more indirect. No fresh Intel disclosure here to lean on, so treat any view on Intel as a secondary, lower-confidence effect at best.\n\n**Broadcom (AVGO)** competes with NVIDIA in parts of the AI silicon/networking space, but Broadcom's own recent news is genuinely good on its own merits \u2014 an expanded custom chip supply deal with Apple through 2031, which strengthens its own independent growth story. So while NVIDIA's strength is a mild competitive headwind for Broadcom in theory, it's likely to be swamped by Broadcom's own positive catalyst. Net effect: I'd call this close to neutral-to-positive for Broadcom, driven far more by its own news than by NVIDIA's.\n\n**Samsung Electronics** \u2014 as noted above \u2014 sits in an unusual spot: it supplies NVIDIA (positive linkage) but also competes with NVIDIA in some chip categories (negative linkage). These two effects partly offset each other, so my honest read is \"mixed, and probably a wash\" rather than a clean directional call.\n\n**Qualcomm, Marvell Technology, Huawei, Alibaba, Baidu, GOOGL (Google), AMZN (Amazon), MSFT (Microsoft), Tesla, Arista Networks, Cisco Systems, Hewlett Packard Enterprise, Lumentum, Ambarella, Renesas Electronics** \u2014 all compete with NVIDIA in various pockets of chips, cloud infrastructure, or AI hardware. Strong NVIDIA demand is a soft negative signal for all of them in the sense that it may reflect share concentration in NVIDIA's favor, but for most of these the overlap is partial (they compete in only one segment of what they do), so I'd characterize the impact as a smaller, secondary effect rather than a direct hit. None of these companies have recent disclosures in front of me showing anything earnings-relevant \u2014 Google's and Microsoft's latest filings were purely governance matters (board elections, an executive departure notice), and Amazon's was a routine debt offering \u2014 so there's nothing in their own recent news either confirming or offsetting this competitive pressure.\n\n## What I Can't Tell You\n\nI don't have recent earnings commentary from AMD, Intel, Samsung, Qualcomm, Marvell, SK Hynix, or Micron that would let me confirm whether the NVIDIA-driven effects I described above are already showing up in their results \u2014 so these are reasoned expectations based on the",
+        "recall": {
+          "recall": 1.0,
+          "found": [
+            "AMD",
+            "AVGO",
+            "INTC",
+            "TSM"
+          ],
+          "missed": []
+        },
+        "coverage": {
+          "coverage": 1.0,
+          "found": [
+            "AMD",
+            "AVGO",
+            "INTC",
+            "TSM"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 5,
+          "correctness": 4,
+          "reasoning_depth": 4
+        }
+      },
+      "flat": {
+        "answer": "# Who's Exposed to NVIDIA's Strong AI GPU Demand\n\nBased on the competitive positioning described in these filings, here's how the landscape breaks down:\n\n## Direct Competitors (Mixed to Negative Exposure)\n\n**AMD** is NVIDIA's most directly named rival in accelerated computing. AMD's own 10-K states it competes with NVIDIA head-to-head in the Data Center segment across \"CPU, GPU, DPU and AI NIC server products,\" and separately identifies NVIDIA as \"the discrete GPU market share leader\" in the Client and Gaming space. This cuts both ways for AMD as a stock: strong AI GPU demand confirms the market NVIDIA and AMD are both chasing is real and growing, which is a tailwind for the category \u2014 but NVIDIA's filing explicitly names AMD as a competitor being out-executed in market share terms, so robust NVIDIA results (especially if Blackwell is dominating data center revenue as the filing notes) could signal NVIDIA is capturing a disproportionate share of that growing pie rather than AMD benefiting equally.\n\n**Intel** shows up in both companies' filings as a competitor \u2014 to NVIDIA in GPUs/accelerated computing, and to AMD in CPUs and integrated graphics. The passages don't give enough detail on Intel's AI accelerator positioning specifically to say how exposed it is to this particular demand signal.\n\n**Huawei** is also named directly by NVIDIA as a competitor in accelerated computing and AI hardware, though the filings don't offer detail on how AI GPU demand trends translate to Huawei's business specifically.\n\n## Cloud/Hyperscaler Customers Building Their Own Chips (Watch Both Ways)\n\nNVIDIA's filing flags a notable group: \"large cloud services companies with internal teams designing hardware and software\" \u2014 specifically naming **Alibaba, Alphabet (Google), Amazon, Baidu, and Microsoft** (alongside Huawei). These companies are simultaneously major NVIDIA customers *and* competitors, since they're developing their own internal AI/accelerated computing chips. Strong NVIDIA demand doesn't necessarily hurt them \u2014 they may still be buying NVIDIA GPUs heavily even as they build alternatives \u2014 but it's worth noting the filing treats them as a competitive risk factor for NVIDIA, not just customers.\n\n## What the Filings Don't Support\n\nI'd caution against reading too much into supplier-side effects (e.g., memory makers, foundries, networking component suppliers) \u2014 these passages don't mention specific suppliers like TSMC, SK Hynix, or Micron, so I can't speak to their exposure based on what's here. Similarly, the filings don't quantify AMD's or Intel's AI-specific data center GPU revenue, so it's hard to size the competitive impact beyond noting that NVIDIA and AMD are described as direct rivals in the same product categories.\n\n## Bottom Line\n\nThe clearest, filing-supported takeaway is that **AMD is the most explicitly named direct competitor** to NVIDIA in AI-accelerated computing and stands as the most relevant stock to watch for a \"read-through\" \u2014 though whether that read-through is positive (market growing) or negative (share loss) isn't something these passages resolve definitively.",
+        "recall": {
+          "recall": 0.75,
+          "found": [
+            "AMD",
+            "INTC",
+            "TSM"
+          ],
+          "missed": [
+            "AVGO"
+          ]
+        },
+        "coverage": {
+          "coverage": 0.25,
+          "found": [
+            "AMD"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 3,
+          "correctness": 4,
+          "reasoning_depth": 3
+        }
+      },
+      "winner": "graph",
+      "rationale": "System A covers all the key reference entities (AMD, TSM, AVGO, INTC) with clear directional reasoning, while System B omits TSM and AVGO entirely and explicitly declines to address suppliers."
+    },
+    {
+      "id": "tsm-customers",
+      "trigger": "TSM",
+      "question": "TSMC raised its capital-expenditure guidance for advanced nodes. Which of its major fabless customers stand to benefit?",
+      "expected": [
+        "NVDA",
+        "AMD",
+        "AVGO"
+      ],
+      "why": "TSMC fabs for NVDA/AMD/AVGO, but a foundry 10-K rarely names customers \u2014 hard for flat RAG.",
+      "graph": {
+        "answer": "# TSMC's Capex Boost: Who Benefits Downstream?\n\nTSMC's June revenue numbers were genuinely impressive \u2014 up nearly 68% year-over-year, capping a first half where sales grew over 35%. That's the kind of momentum that usually precedes exactly this sort of move: pouring more money into advanced-node capacity to keep up with demand. For an investor, the real question is who's standing in line for that extra capacity. Here's how I'd think about the direct customers I have visibility into:\n\n**AMD \u2014 direct beneficiary, meaningful effect**\nAMD is one of TSMC's core fabless customers for leading-edge silicon. If TSMC is expanding advanced-node capacity, that's TSMC signaling it expects (or wants to capture) strong demand for cutting-edge chips \u2014 the kind AMD needs for its CPU and GPU lines. More capacity typically means better allocation, less risk of supply constraints, and potentially better pricing leverage for AMD as a customer. This is a fairly direct, positive read-through, though we don't have fresh AMD-specific earnings commentary this cycle to confirm demand is currently running hot on their end \u2014 the only recent AMD filing was a routine executive-pay disclosure, so take the benefit as structural rather than confirmed by their own numbers right now.\n\n**NVDA \u2014 direct beneficiary, likely the biggest one**\nNvidia is TSMC's other marquee advanced-node customer, and given the AI chip boom, it's a reasonable bet that Nvidia's demand is a significant driver of TSMC's own capacity expansion in the first place. More advanced-node capacity should ease any bottleneck risk for Nvidia's high-end AI GPUs. Like AMD, we don't have new Nvidia earnings commentary here (their recent filing was just an executive transition announcement), but the capex expansion itself is a strong indirect positive signal for Nvidia's supply chain security.\n\n**Broadcom (AVGO) \u2014 direct beneficiary, and there's corroborating good news**\nBroadcom also relies on TSMC for advanced manufacturing, particularly its custom AI silicon business. This one's worth flagging because it's not just a structural inference \u2014 Broadcom just announced an expanded, multi-year custom chip agreement with Apple running through 2031. That's a strong positive catalyst in its own right (durable revenue visibility in a high-margin business), and TSMC's expanded capacity only reinforces Broadcom's ability to actually deliver on that kind of long-dated commitment. This is a case where two separate pieces of good news compound rather than just one flowing through.\n\n**Now, the flip side \u2014 who doesn't share in this**\nIt's worth being clear that not everyone benefits just because TSMC is thriving. AMD and Nvidia compete head-to-head, so more capacity helping both doesn't mean the competitive dynamic between them changes \u2014 it's not a rising-tide situation for market share, just for supply security. Similarly, chip designers who rely on other foundries (Samsung, GlobalFoundries, UMC feed into AMD alongside TSMC) aren't directly touched by this specific TSMC announcement \u2014 if anything, TSMC pulling further ahead on advanced-node investment could make it harder for those alternative foundries to compete for leading-edge business over time, which is a subtle negative for that part of the supply chain, though I don't have specific disclosures from those foundries to confirm that dynamic playing out yet.\n\n**Bottom line:** AMD, Nvidia, and Broadcom are the fabless customers most clearly positioned to benefit from TSMC's expanded advanced-node capacity, since all three depend on TSMC for their most cutting-edge chips. The effect is direct and structural for all three, with Broadcom's case reinforced by its own recent positive news. I'd caution against assuming this changes the competitive balance between AMD and Nvidia, though \u2014 it's a supply-side tailwind for both, not a shift in who's winning the AI chip race.",
+        "recall": {
+          "recall": 1.0,
+          "found": [
+            "AMD",
+            "AVGO",
+            "NVDA"
+          ],
+          "missed": []
+        },
+        "coverage": {
+          "coverage": 1.0,
+          "found": [
+            "AMD",
+            "AVGO",
+            "NVDA"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 5,
+          "correctness": 4,
+          "reasoning_depth": 4
+        }
+      },
+      "flat": {
+        "answer": "I don't see anything in these materials that addresses TSMC raising capital-expenditure guidance for advanced nodes, nor any discussion of which fabless customers might benefit from such a move.\n\nWhat's actually in the notes here relates to a different set of topics: TSMC's subsidiary structure (engineering support entities in Japan, Korea, Canada, and elsewhere; its manufacturing units in Germany and Washington state), details on share cancellations and dividend resolutions through 2025, and its employee stock compensation plans (RSAs and cash-settled awards tied to performance metrics like total shareholder return relative to the S&P 500 IT Index). There's also unrelated material on Digital Realty's largest data-center tenants and ASML's long-term incentive plan metrics.\n\nNone of this touches on capex plans, advanced-node investment, or customer relationships with fabless chip designers like Nvidia, AMD, Apple, or Qualcomm \u2014 so I can't responsibly connect TSMC's spending decisions to specific customer beneficiaries based on what's available here. If you're looking into that question, you'd want TSMC's capex guidance commentary (usually discussed in earnings calls) and customer concentration disclosures, which aren't part of what I have in front of me.",
+        "recall": {
+          "recall": 0.6666666666666666,
+          "found": [
+            "AMD",
+            "NVDA"
+          ],
+          "missed": [
+            "AVGO"
+          ]
+        },
+        "coverage": {
+          "coverage": 0.0,
+          "found": []
+        },
+        "judge": {
+          "entity_coverage": 1,
+          "correctness": 2,
+          "reasoning_depth": 1
+        }
+      },
+      "winner": "graph",
+      "rationale": "System B correctly identifies NVDA, AMD, and AVGO as beneficiaries with sound reasoning about capacity/supply dynamics, while System A declines to answer at all."
+    },
+    {
+      "id": "amd-datacenter",
+      "trigger": "AMD",
+      "question": "AMD reported strong data-center accelerator growth. What does that imply for its main GPU rival and the foundry that manufactures its chips?",
+      "expected": [
+        "NVDA",
+        "TSM"
+      ],
+      "why": "NVDA is the rival; TSMC is the shared foundry.",
+      "graph": {
+        "answer": "A quick flag before I dive in: the AMD disclosures I actually have in front of me don't contain the data-center accelerator growth commentary you're referencing \u2014 the AMD 10-K carries no financial detail and the AMD 8-K on file is purely about executive pay changes for Lisa Su and her team, with nothing on revenue or business performance. So I can't confirm the specifics of that growth number from what's here. What I can do is reason through what this kind of news would typically mean for the companies tied to AMD, based on the well-established competitive and supply relationships, so you can apply it once you've verified the actual figures.\n\n**NVIDIA \u2014 this would be a real negative, not a shared win**\nNVIDIA is AMD's direct, head-to-head competitor in GPUs and AI accelerators. When one of the two players in a duopoly-like market posts strong data-center accelerator growth, it's rarely \"a rising tide lifts all boats\" \u2014 it more often means AMD is either growing the overall pie at NVIDIA's expense or, worse, taking share directly (customers who might have bought NVIDIA chips buying AMD instead). Since NVIDIA hasn't put out any earnings-related news recently (its only current filing is a routine executive-transition announcement about a sales-leadership hire, with no financial content), there's nothing offsetting this from NVIDIA's own disclosures right now. So the reasonable read is: strong AMD data-center numbers are a direct, meaningful negative signal for NVIDIA's competitive position, even though it says nothing about NVIDIA's actual reported results \u2014 it just raises the risk that NVIDIA's own upcoming numbers could show slower growth or share erosion in the same market.\n\n**TSMC \u2014 this is a genuine positive, and a fairly direct one**\nAMD relies on TSMC as its primary manufacturer for advanced chips, including its high-end data-center GPUs (AMD also has smaller manufacturing relationships with GlobalFoundries and United Microelectronics, but those are not typically where the cutting-edge accelerator volume comes from). If AMD's accelerator business is growing quickly, that almost mechanically translates into more wafer orders and manufacturing revenue for TSMC. This dovetails with what TSMC has already told the market: its most recent monthly and first-half revenue figures showed very strong year-over-year growth, and management explicitly attributed it to sustained AI and high-performance-computing chip demand. AMD's strength is one more data point reinforcing that same story \u2014 TSMC benefits from strong demand across both AMD and NVIDIA, so it's somewhat insulated from the competitive back-and-forth between the two chip designers. This is a solid, direct positive for TSMC's outlook.\n\n**Net picture:** think of it as AMD's good news splitting into a negative for its rival and a positive for its manufacturer \u2014 the money AMD is making by winning data-center accelerator business is coming partly out of NVIDIA's potential upside, while simultaneously flowing through to TSMC, which profits from manufacturing volume regardless of which of the two GPU makers is winning the sales race.\n\nOne more honest caveat: I don't have anything in the current disclosures for Samsung, GlobalFoundries, or United Microelectronics \u2014 AMD's other chip suppliers \u2014 so I can't say anything meaningful about how this would ripple to them specifically.",
+        "recall": {
+          "recall": 1.0,
+          "found": [
+            "NVDA",
+            "TSM"
+          ],
+          "missed": []
+        },
+        "coverage": {
+          "coverage": 1.0,
+          "found": [
+            "NVDA",
+            "TSM"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 5,
+          "correctness": 5,
+          "reasoning_depth": 5
+        }
+      },
+      "flat": {
+        "answer": "# What AMD's Data Center Numbers Actually Show\n\nAMD's Data Center segment posted $16.6 billion in revenue for 2025, up 32% from $12.6 billion the year before. The company attributes this growth to strong demand for its 5th generation EPYC processors and its Instinct MI350 series GPUs, along with new networking products like the Pensando \"Pollara\" and \"Vulcano\" AI NICs. AMD also mentions it's working on a \"Helios\" AI rack-scale platform that would bundle its CPUs, GPUs, and networking gear together \u2014 clearly aimed at large-scale AI deployments.\n\nThe filing does flag one headwind: AMD took roughly $440 million in inventory-related charges tied to U.S. export controls on its Instinct MI308 GPU, which was built for certain international markets. That's worth noting as a real cost, even amid the growth.\n\n## What This Means for Nvidia\n\nHere's where I have to be straightforward with you: **the filings don't draw a direct line between AMD's growth and Nvidia's business.** AMD's own 10-K does name Nvidia as its principal competitor in the Data Center GPU space, and Nvidia's own filing confirms it's leaning hard into the same market \u2014 noting that its Blackwell architecture represented the majority of its Data Center revenue in fiscal 2026, driven by the broader AI infrastructure buildout.\n\nSo both companies are clearly chasing the same AI accelerator demand, and AMD explicitly identifies Nvidia as its main rival there. But neither filing tells us how AMD's specific revenue growth is *affecting* Nvidia \u2014 whether it's taking share, whether Nvidia's growth is decelerating because of it, or whether the market is simply expanding fast enough that both are growing. Nvidia's passage focuses on its own drivers (Blackwell, data center buildout needs like energy and capital availability) without referencing AMD at all. I'd be guessing if I tried to connect those dots more tightly than the documents do.\n\n## What About the Foundry?\n\nThis is a gap in what I have available. Neither the AMD filing nor the Nvidia filing in front of me mentions a specific foundry partner (like TSMC) or discusses manufacturing capacity, wafer allocation, or supply chain relationships with chip fabricators. So I genuinely can't tell you anything about how AMD's growth might ripple through to whichever company manufactures its chips \u2014 the documents just don't address that topic.\n\n## Bottom Line\n\nAMD had a strong year in AI data center hardware, and it explicitly competes with Nvidia in that space \u2014 that much is clear from both companies' own words. But if you're trying to figure out competitive share shifts between AMD and Nvidia, or manufacturing/foundry implications, you'll need to look beyond these particular filings, since they don't connect those dots for you.",
+        "recall": {
+          "recall": 1.0,
+          "found": [
+            "NVDA",
+            "TSM"
+          ],
+          "missed": []
+        },
+        "coverage": {
+          "coverage": 0.5,
+          "found": [
+            "NVDA"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 2,
+          "correctness": 4,
+          "reasoning_depth": 2
+        }
+      },
+      "winner": "graph",
+      "rationale": "System A correctly identifies both NVDA and TSM with clear directional reasoning (negative for NVDA via share loss, positive for TSM via wafer demand), while System B fails to surface TSMC at all and declines to reason about NVDA impact despite having enough general knowledge to do so."
+    },
+    {
+      "id": "avgo-relations",
+      "trigger": "AVGO",
+      "question": "Broadcom is benefiting from AI networking demand. Who are its main competitors in AI silicon, and who manufactures its chips?",
+      "expected": [
+        "NVDA",
+        "AMD",
+        "TSM"
+      ],
+      "why": "AVGO competes with NVDA/AMD and is fabbed by TSMC.",
+      "graph": {
+        "answer": "# Broadcom's AI Silicon Landscape: Competitors and Suppliers\n\n## The Latest News on Broadcom\n\nBroadcom just disclosed an expanded, multi-year custom chip agreement with Apple that runs through 2031. This is a genuinely positive signal \u2014 it locks in long-term demand for Broadcom's custom AI silicon business (the specialized chips it designs for large customers) well into the next decade. It doesn't come with new revenue numbers attached, but the market should read it as confirmation that Broadcom's biggest AI design wins have staying power, not just short-term momentum. **This is a direct, meaningful positive for Broadcom** \u2014 it's their own news, about their own core growth engine.\n\n## Who Competes With Broadcom in AI Silicon\n\n**Nvidia** is Broadcom's most direct rival in this space. The two go head-to-head in AI computing silicon, so anything that strengthens Broadcom's custom silicon franchise \u2014 like the Apple deal \u2014 is a modest competitive negative for Nvidia, since it signals Broadcom is deepening its foothold with major customers rather than ceding that ground. That said, this is a **secondary, background effect for Nvidia**, not a direct hit \u2014 Nvidia's own AI GPU business operates at a different scale and Broadcom's custom ASIC niche doesn't displace Nvidia overnight.\n\n**AMD** competes with Broadcom as well. The same logic applies: Broadcom's expanding custom silicon relationship with Apple is a small incremental negative for AMD's competitive positioning, though again this is a secondary effect rather than something that shows up in AMD's numbers this quarter. Worth noting: AMD's own recent disclosure was just routine executive pay administration \u2014 nothing there moves the needle on its business outlook one way or the other.\n\nI don't have enough information in my notes to identify other direct AI-silicon competitors to Broadcom beyond Nvidia and AMD \u2014 if there are others (say, in custom ASIC design specifically), they're not something I can speak to confidently here.\n\n## Who Manufactures Broadcom's Chips\n\nBroadcom relies on a small group of key manufacturing and packaging partners:\n\n- **Taiwan Semiconductor Manufacturing (TSM)** \u2014 the core fabricator supplying Broadcom's chips. TSM just reported blockbuster results: June revenue up nearly 68% year-over-year, capping a strong first half of the year, which points to very robust demand for advanced AI/high-performance chips industry-wide. **This is a strong positive signal for Broadcom indirectly** \u2014 it suggests TSM has the demand and capacity utilization to keep supporting Broadcom's chip needs, and it reflects a healthy overall AI chip cycle that Broadcom is riding. It's not Broadcom's own news, but it's a good read-through on the ecosystem Broadcom depends on.\n\n- **Advanced Semiconductor Engineering, Amkor Technology, Siliconware Precision Industries** \u2014 these are Broadcom's packaging and assembly partners (they handle the finishing steps after chips are fabricated). I don't have any recent news on these companies, so there's nothing to flag as a positive or negative catalyst from their side right now.\n\n- **Foxconn Technology** \u2014 also supplies Broadcom, likely on the manufacturing/assembly side. No recent disclosures here either, so no signal to report.\n\n## Bottom Line for the Investor\n\nThe Apple ASIC extension is the standout piece of news here \u2014 a direct, durable positive for Broadcom's AI silicon franchise, and a modest (not dramatic) competitive negative for Nvidia and AMD. Meanwhile, TSM's blowout results are an encouraging supply-side indicator that the manufacturing backbone behind Broadcom's chips is running hot, which supports the broader AI demand story Broadcom is benefiting from. The rest of Broadcom's supplier base (packaging partners, Foxconn) hasn't generated news worth flagging one way or the other.",
+        "recall": {
+          "recall": 1.0,
+          "found": [
+            "AMD",
+            "NVDA",
+            "TSM"
+          ],
+          "missed": []
+        },
+        "coverage": {
+          "coverage": 1.0,
+          "found": [
+            "AMD",
+            "NVDA",
+            "TSM"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 5,
+          "correctness": 4,
+          "reasoning_depth": 4
+        }
+      },
+      "flat": {
+        "answer": "Based on what's in these filings, I can only partially answer this one.\n\nOn the competitor side, the notes don't give a direct, Broadcom-specific breakdown of its AI silicon rivals. The Broadcom passage here focuses mainly on deal-making history \u2014 the VMware merger, the sale of VMware's end-user computing business to KKR, and the acquisition of Seagate's System-on-Chip design assets \u2014 rather than laying out its competitive landscape in AI chips.\n\nThat said, Broadcom does show up in other companies' filings as a competitor in adjacent areas. Nvidia's 10-K lists Broadcom among the players in networking products \u2014 switches, network adapters (including DPUs), and cable/optical solutions \u2014 putting it in the same category as AMD, Arista, Cisco, Marvell, and others in that space. AMD's filing, meanwhile, names Intel and Nvidia specifically as its key rivals but doesn't mention Broadcom directly. So the filings suggest Broadcom's competitive positioning is more clearly established in networking hardware than in the core AI silicon/accelerator race where Nvidia and AMD are the more prominently named players.\n\nAs for who manufactures Broadcom's chips: the available filings don't say. None of the passages here describe Broadcom's manufacturing arrangements or confirm whether it uses a foundry partner like TSMC. Broadcom is a fabless-style semiconductor company in practice, but that detail about its manufacturing relationships simply isn't spelled out in these documents, so I don't want to guess at a specific foundry partner without it being stated.\n\nIf you want a fuller picture of Broadcom's AI silicon competition and its manufacturing setup, it would be worth looking specifically at Broadcom's own risk factors or business description sections, since the passage included here is mostly about its recent acquisitions and revenue mix rather than competitive strategy.",
+        "recall": {
+          "recall": 1.0,
+          "found": [
+            "AMD",
+            "NVDA",
+            "TSM"
+          ],
+          "missed": []
+        },
+        "coverage": {
+          "coverage": 1.0,
+          "found": [
+            "AMD",
+            "NVDA",
+            "TSM"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 2,
+          "correctness": 3,
+          "reasoning_depth": 2
+        }
+      },
+      "winner": "graph",
+      "rationale": "System B correctly identifies NVDA, AMD, and TSM with clear directional reasoning about competitive and supply-chain impacts, while System A admits it cannot answer most of the question."
+    },
+    {
+      "id": "nvda-lift-pressure",
+      "trigger": "NVDA",
+      "question": "Beyond NVIDIA itself, which chipmakers would a blowout NVIDIA quarter most likely lift, and which would it pressure?",
+      "expected": [
+        "AMD",
+        "TSM",
+        "AVGO"
+      ],
+      "why": "Supplier TSMC lifts with demand; rivals AMD/AVGO face share pressure.",
+      "graph": {
+        "answer": "# How a Blowout NVIDIA Quarter Would Ripple Through the Chip Sector\n\nIf NVIDIA posts a truly standout quarter \u2014 strong revenue, upbeat guidance \u2014 here's how I'd expect that news to move related companies, and why.\n\n## Likely Winners: The Suppliers\n\nA blowout NVIDIA quarter almost always means one thing at the foundation: **NVIDIA is shipping (and presumably selling) a lot of chips.** That's a direct, first-order positive for the companies that manufacture and assemble those chips:\n\n- **TSMC (TSM)** \u2014 TSMC is NVIDIA's primary foundry partner, so strong NVIDIA demand translates fairly directly into strong TSMC utilization and revenue. This is reinforced by TSMC's own recent numbers, which already show explosive year-over-year growth, explicitly tied to AI/high-performance-computing chip demand. A great NVIDIA quarter would likely be read as *more confirmation* of that trend, not a surprise \u2014 this is about as direct a read-through as exists in the sector.\n- **SK Hynix and Micron Technology** \u2014 both supply memory (HBM) that goes into NVIDIA's AI accelerators. Strong NVIDIA shipment volumes generally mean strong demand for the memory that accompanies them. This is a real, direct tailwind, though somewhat secondary to TSMC since memory pricing and supply dynamics can move independently of any single customer's results.\n- **Samsung Electronics** \u2014 supplies NVIDIA as well, so there's a similar direct benefit here. Worth noting, though, that Samsung shows up in two roles: it's also a competitor to NVIDIA in some chip categories, so the \"supplier\" upside and any \"competitor\" pressure could partially offset each other depending on which business line is in focus.\n- **Hon Hai Precision (Foxconn), Wistron, and Fabrinet** \u2014 these handle assembly, server building, and optical/interconnect components for NVIDIA's hardware. A blowout quarter driven by strong shipments would be a direct, positive read-through for their order books, though the effect is generally smaller in magnitude than for TSMC or the memory makers since these are more like fulfillment/assembly steps rather than the core value-add.\n\n## Likely Losers: The Direct Competitors\n\nThe flip side of NVIDIA's strength is that in a competitive market, one company's blowout quarter often signals *share gains at someone else's expense* rather than a rising tide lifting all boats. The companies most exposed here:\n\n- **AMD** \u2014 AMD is NVIDIA's most direct competitor, especially in GPUs and AI accelerators. Strong NVIDIA results \u2014 particularly if driven by AI demand \u2014 raise the uncomfortable question of whether AMD is keeping pace or losing ground in the same market. This is a meaningful, direct negative-sentiment risk for AMD, not because AMD's own business is necessarily deteriorating, but because investors will naturally benchmark AMD's upcoming results against NVIDIA's strength. Notably, AMD's own recent disclosure was purely administrative (executive compensation changes) with no earnings signal of its own, so there's nothing in AMD's own news to counterbalance this competitive pressure right now.\n- **Broadcom (AVGO)** \u2014 also competes with NVIDIA in parts of the AI/networking chip space. That said, Broadcom's own recent news is a genuine positive in its own right: it just expanded a multi-year custom chip agreement with Apple through 2031, which is a durable, high-margin win that stands on its own merits. So while NVIDIA's strength could create some competitive overhang for Broadcom's AI ambitions, Broadcom has an independent, company-specific tailwind that likely matters more to its stock in the near term.\n- **Qualcomm and Marvell Technology** \u2014 both compete with NVIDIA in various chip categories. A strong NVIDIA quarter, especially if it reflects share gains in AI or data center silicon, is a secondary but real headwind \u2014 more of a \"read-through concern\" than a direct hit, since their core businesses (mobile, custom silicon, networking) don't overlap with NVIDIA as completely as AMD's does.\n- **Intel** \u2014 competes with NVIDIA broadly. Given Intel's ongoing struggles to establish itself in AI accelerators, a blowout NVIDIA quarter reinforces the narrative that NVIDIA is pulling further ahead in the highest-growth part of the chip market. This is a real but somewhat diffuse negative \u2014 Intel's stock tends to move more on its own execution news than on NVIDIA's results specifically.\n- **Cloud/hyperscaler competitors \u2014 GOOGL, AMZN, MSFT** \u2014 these companies compete with NVIDIA in the sense that they're developing their own custom AI chips (TPUs, Trainium, Maia) as alternatives to buying NVIDIA GPUs. A blowout NVIDIA quarter is a mixed signal for them: on one hand it suggests continued strong AI infrastructure demand overall, which is good for their cloud businesses; on the other, it may underscore how dependent they still are on NVIDIA and how much pricing power NVIDIA retains. None of these three have any meaningful earnings news of their own right now (their recent filings are governance/administrative matters \u2014 board departures, annual meeting results, a debt offering), so there's nothing company-specific to offset this read either way. I'd call this a mild, mixed effect rather than a clear positive or negative.\n- **Huawei, Alibaba, Baidu** \u2014 all compete with NVIDIA in AI chip development in some form. I don't have recent disclosure commentary on any of these to gauge their current sentiment, so I can't say anything meaningful about how a strong NVIDIA quarter would interact with their own news cycle right now \u2014 just that competitively, the dynamic would be similar to the hyperscalers: NVIDIA strength is a reminder of the ground they need to make up.\n\n## Bottom Line\n\nThe cleanest",
+        "recall": {
+          "recall": 1.0,
+          "found": [
+            "AMD",
+            "AVGO",
+            "TSM"
+          ],
+          "missed": []
+        },
+        "coverage": {
+          "coverage": 1.0,
+          "found": [
+            "AMD",
+            "AVGO",
+            "TSM"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 5,
+          "correctness": 4,
+          "reasoning_depth": 5
+        }
+      },
+      "flat": {
+        "answer": "# NVIDIA's Ripple Effect: Who Gains, Who Feels the Squeeze\n\nBased on what's in these filings, the clearest read-through from a strong NVIDIA quarter is actually about competitive pressure on AMD, rather than a broad \"rising tide lifts all chipmakers\" story.\n\n## The Pressure Case: AMD\n\nAMD's own 10-K is pretty candid that NVIDIA is its central rival across multiple product lines, and that NVIDIA's strength directly translates into competitive headwinds for AMD:\n\n- **Data Center**: AMD names NVIDIA as a primary competitor for CPUs, GPUs, DPUs, and AI networking chips (NICs).\n- **Client and Gaming**: AMD explicitly calls NVIDIA \"the discrete GPU market share leader\" and says NVIDIA \"leverages its market position in data center GPU, financial resources, and proprietary software ecosystem\" in ways that \"influence customers who do business with us.\" AMD goes as far as saying this dynamic \"may limit our market share and decrease our margins and profitability.\"\n- **The Intel wrinkle**: AMD's filing also flags something worth watching \u2014 in September 2025, NVIDIA announced a partnership and investment in Intel around data center and client platform products. AMD explicitly says this \"may result in increased competition and pricing pressure for our products,\" meaning a strengthening NVIDIA-Intel relationship could squeeze AMD from two directions at once rather than one.\n\nSo if NVIDIA posts a blowout quarter \u2014 especially one driven by data center AI demand, which the filings say is the current growth engine (with Blackwell architecture as the majority of that revenue) \u2014 AMD's own disclosures suggest that's more likely a signal of competitive share and pricing pressure for AMD than a tailwind.\n\n## The Lift Case: Limited Evidence Here\n\nThe passages don't give a basis for identifying chipmakers that would clearly benefit alongside NVIDIA. There's a mention of NVIDIA's new partnership with Intel on data center and client platforms, which \u2014 if you read between the lines of AMD calling it a competitive threat \u2014 implies Intel could see some benefit from closer ties to NVIDIA. But the filings don't spell out the mechanics of that partnership or quantify any lift to Intel; it's mentioned only in the context of AMD flagging it as a risk to itself.\n\n## Bottom Line\n\nFrom what's here, a strong NVIDIA quarter reads primarily as a warning sign for AMD across GPUs, data center silicon, and gaming \u2014 not as good news for the broader chip sector. There's a hint that Intel's new partnership with NVIDIA could position it differently, but the available filings don't spell out how that partnership actually affects Intel's results, so I'd stop short of calling it a clear beneficiary based on this material alone.",
+        "recall": {
+          "recall": 0.3333333333333333,
+          "found": [
+            "AMD"
+          ],
+          "missed": [
+            "AVGO",
+            "TSM"
+          ]
+        },
+        "coverage": {
+          "coverage": 0.3333333333333333,
+          "found": [
+            "AMD"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 2,
+          "correctness": 5,
+          "reasoning_depth": 3
+        }
+      },
+      "winner": "graph",
+      "rationale": "System A covers the full reference set (AMD, TSM, AVGO) plus plausible extended players with clear directional reasoning, while System B is well-grounded but narrowly focused on AMD and never mentions TSM or AVGO."
+    },
+    {
+      "id": "msft-stack",
+      "trigger": "MSFT",
+      "question": "How is Microsoft connected to the leading AI GPU and accelerator makers in its hardware supply chain?",
+      "expected": [
+        "NVDA",
+        "AMD"
+      ],
+      "why": "MSFT relates to NVDA and AMD in the AI hardware stack.",
+      "graph": {
+        "answer": "# Microsoft's Connection to AI GPU and Accelerator Makers\n\nHere's the interesting thing about Microsoft's position in the AI hardware world: it doesn't show up as a direct customer of AMD or Nvidia in the disclosures I have \u2014 but that doesn't mean it's disconnected from what happens to them. The real story runs through supply chains and competitive dynamics that eventually loop back to Microsoft's own cloud and hardware ambitions.\n\n## AMD: A supplier to Microsoft, and worth watching for that reason\n\nAMD supplies chips to Microsoft directly \u2014 this is a real, established supply relationship (Microsoft relies on AMD in areas like data center silicon and Xbox-related chips, alongside AMD's other major customers like Sony and OpenAI). Right now, though, there's no meaningful AMD news to speak of. The one recent AMD disclosure is a routine 8-K about executive compensation increases for Lisa Su and other leaders \u2014 administrative housekeeping, not a signal about chip demand, margins, or output. So for Microsoft, there's nothing here to react to yet. If AMD's supply capacity or roadmap were to shift, that would matter to Microsoft directly, but this particular filing doesn't tell us anything on that front.\n\n## Nvidia: A competitor of Microsoft, not a supplier \u2014 and its news is mildly interesting, not alarming\n\nNvidia's relationship to Microsoft is actually a competitive one, not a supply one, in these disclosures \u2014 the two are listed as rivals rather than Nvidia being Microsoft's chip supplier. Nvidia's recent 8-K is another executive transition story: longtime field-operations leader Ajay Puri is retiring, replaced by a 26-year Microsoft veteran, Nicholas Parker. There's a small irony here \u2014 Microsoft is effectively \"exporting\" go-to-market talent to a company it competes with. For Nvidia, this is a mild long-term positive (experienced leadership continuity), but it's not an earnings-moving event. For Microsoft, this is a very indirect, low-stakes item \u2014 it doesn't hurt Microsoft to lose an executive to a competitor, but it's worth noting as a talent-flow signal rather than a business one.\n\n## The real leverage point: TSMC's boom is upstream of both AMD and Nvidia\n\nThis is where the chain gets meaningful. TSMC \u2014 the dominant foundry supplying advanced chips to both AMD and Nvidia \u2014 just posted very strong results: June revenue up roughly 68% year-over-year, with a strong first half overall. That's a clear signal of robust demand for advanced AI and high-performance computing chips industry-wide.\n\nWhy does this matter for Microsoft? TSMC's strength suggests the AI chip supply chain is running hot \u2014 good news for AMD's ability to actually get the silicon it needs to fulfill orders (including to Microsoft), and it's also a sign that the broader AI infrastructure buildout (which Microsoft depends on for its cloud/Azure AI capacity) has strong underlying momentum. This is a secondary, indirect effect for Microsoft \u2014 not something that shows up in its own earnings, but a positive read on whether its hardware partners can keep pace with AI demand.\n\n## Where AVGO fits in, tangentially\n\nBroadcom's new multi-year custom chip agreement with Apple is a positive for Broadcom's own high-margin custom silicon business, but it doesn't connect meaningfully to Microsoft based on what's here \u2014 Broadcom isn't tied to Microsoft as a supplier or competitor in these records. Worth flagging only because Broadcom competes with AMD and Nvidia, so a stronger Broadcom in custom AI silicon is a modest, indirect competitive pressure on AMD and Nvidia's custom-chip ambitions \u2014 but this is a few steps removed from Microsoft itself, and I wouldn't weight it heavily in a Microsoft-focused view.\n\n## Bottom line\n\nRight now, none of the disclosed news items are earnings- or guidance-driven shocks for AMD or Nvidia specifically \u2014 it's mostly governance and leadership housekeeping. The one substantive signal is TSMC's strong growth, which is a quiet positive for the health of the AI chip supply chain Microsoft depends on, even though it doesn't show up on Microsoft's own income statement. I don't have enough here to say anything concrete about Microsoft's direct GPU purchasing relationships with Nvidia (which in reality is a very large customer relationship in Microsoft's actual business, even though it's not reflected in what's listed here) \u2014 so I'd flag that as a gap rather than guess at impact.",
+        "recall": {
+          "recall": 1.0,
+          "found": [
+            "AMD",
+            "NVDA"
+          ],
+          "missed": []
+        },
+        "coverage": {
+          "coverage": 1.0,
+          "found": [
+            "AMD",
+            "NVDA"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 4,
+          "correctness": 3,
+          "reasoning_depth": 4
+        }
+      },
+      "flat": {
+        "answer": "Based on what these filings actually say, Microsoft's connection to NVIDIA and AMD shows up in two fairly different ways\u2014and it's worth being clear about what's stated versus what's not.\n\n**On the NVIDIA side**, Microsoft is named as one of the large cloud players and hardware/software companies that NVIDIA considers a competitor. The filing lists Microsoft alongside Alibaba, Alphabet, Amazon, Baidu, and Huawei as companies that \"incorporate accelerated or AI computing functionality as part of their internal solutions or platforms\"\u2014meaning Microsoft builds some of this capability in-house rather than relying purely on outside suppliers. Microsoft also shows up in the list of Arm-based CPU suppliers and companies building their own CPU hardware/software stacks. So from NVIDIA's own competitive framing, Microsoft is as much a rival building internal silicon and infrastructure as it is a customer.\n\nThat said, the passages don't explicitly describe Microsoft as an NVIDIA customer or state what portion of NVIDIA's GPUs go into Microsoft's data centers\u2014that specific relationship isn't spelled out here, even though it's implied by Microsoft being one of the \"major server maker and CSP\" partners NVIDIA says its computing platforms are available through.\n\n**On the AMD side**, the connection is more explicit and goes the other direction: AMD's filing describes real dependency risk on Microsoft. AMD says its ability to innovate on x86 chips \"depends partially on Microsoft designing and developing its operating systems to run on or support\" AMD's microprocessor products, and the same goes for AMD's graphics products. AMD also notes that some of its software drivers need Microsoft certification, and if Microsoft stopped supporting AMD's chips or declined to certify drivers, independent software vendors might not bother optimizing for AMD hardware, and customers might avoid AMD-based PCs as a result.\n\n**Bottom line for you as an investor:** the filings show Microsoft sitting on both sides of the fence. With AMD, Microsoft is explicitly called out as a critical software/OS partner whose cooperation AMD needs to keep selling chips. With NVIDIA, Microsoft is framed mainly as a competitor building its own accelerated computing and CPU capabilities internally, rather than as a dependency NVIDIA calls out by name. If you're trying to map out Microsoft's role as a customer versus a competitor across the whole GPU/accelerator landscape, these particular filings only give you pieces of that picture\u2014they don't spell out purchase volumes, chip orders, or the full nature of Microsoft's cloud relationship with NVIDIA.",
+        "recall": {
+          "recall": 1.0,
+          "found": [
+            "AMD",
+            "NVDA"
+          ],
+          "missed": []
+        },
+        "coverage": {
+          "coverage": 1.0,
+          "found": [
+            "AMD",
+            "NVDA"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 4,
+          "correctness": 5,
+          "reasoning_depth": 3
+        }
+      },
+      "winner": "flat",
+      "rationale": "A stays tightly grounded in accurate filing-based relationships (NVIDIA as competitor, AMD as dependent partner) while B, despite richer indirect reasoning via TSMC/AVGO, mischaracterizes the core Microsoft-Nvidia GPU customer relationship as merely competitive, which is a significant correctness flaw on the central question."
+    },
+    {
+      "id": "tsm-dependence",
+      "trigger": "TSM",
+      "question": "Whose businesses are most dependent on TSMC's manufacturing output for their leading-edge products?",
+      "expected": [
+        "NVDA",
+        "AMD",
+        "AVGO"
+      ],
+      "why": "The three fabless customers most tied to TSMC capacity.",
+      "graph": {
+        "answer": "# Who Relies Most on TSMC's Manufacturing?\n\nBased on what I'm tracking, two companies stand out as being deeply dependent on TSMC for their most advanced chips: **AMD** and **Broadcom (AVGO)**. Nvidia is also a major customer, though I have less specific news to discuss there this cycle.\n\n## The Big Picture: TSMC's Momentum Is Strong\n\nTSMC just reported a very strong June and first-half performance \u2014 revenue up nearly 68% year-over-year for the month, with first-half revenue up over 35% versus a year ago. This kind of sustained growth is almost certainly being driven by demand for the advanced chips used in AI and high-performance computing. That's the backdrop for everything below: TSMC's foundry business is running hot, which is generally a good sign for the companies that depend on it, but it also raises the question of who benefits versus who might feel squeezed on capacity or pricing.\n\n## AMD \u2014 Directly Exposed, Likely a Positive Read-Through\n\nAMD is one of the companies most reliant on TSMC's leading-edge manufacturing \u2014 TSMC is AMD's primary chip fabricator for its most advanced processors. When TSMC says demand for advanced chips is surging, that's a strong signal AMD's own products (which TSMC actually builds) are riding that same wave. This is a direct effect, not a secondary one.\n\nThat said, AMD's own recent disclosure was purely administrative \u2014 an 8-K about executive pay adjustments for Lisa Su and other leaders, with zero information on sales or guidance. So while there's no fresh news from AMD itself to confirm this, TSMC's results give investors a reasonable proxy for how AMD's manufacturing partner is performing, which matters a lot given how central TSMC is to AMD's supply chain.\n\nIt's worth noting AMD also sources from other foundries (Samsung, GlobalFoundries, and United Microelectronics), which gives it some diversification \u2014 but TSMC is generally considered the most important of these for AMD's leading-edge, highest-performance chips.\n\n## Broadcom (AVGO) \u2014 Directly Exposed, and There's Good News of Its Own\n\nBroadcom is another company that leans heavily on TSMC for its advanced chip manufacturing. Separately, Broadcom just disclosed an expanded, multi-year custom chip supply deal with Apple running through 2031 \u2014 a meaningful positive because it locks in years of high-margin custom silicon revenue. This is good news for Broadcom in its own right, but it also indirectly reinforces why TSMC's manufacturing capacity matters so much: Broadcom's ability to deliver on a long-term Apple commitment depends on reliable, leading-edge fabrication \u2014 which is TSMC's job. So TSMC's strong output and Broadcom's new long-term contract are complementary positives, not independent stories \u2014 one supports the other.\n\n## Nvidia \u2014 Also Deeply Dependent, But No Fresh News to Lean On\n\nNvidia is arguably just as reliant on TSMC as AMD or Broadcom for its most advanced GPUs, but the only recent Nvidia disclosure was a routine executive transition (a new sales leadership hire), with no financial or demand commentary. So while I can say with confidence that Nvidia's leading-edge products depend heavily on TSMC's manufacturing, I don't have anything new from Nvidia itself this cycle to say whether that dependency is currently working for or against it. TSMC's strong growth is a reasonable positive signal by extension, but it's an inference, not something Nvidia has confirmed directly.\n\n## What This Means for Competitors (Not Everyone Wins Equally)\n\nIt's worth flagging: TSMC's strength doesn't necessarily mean good news for everyone in the semiconductor space. If TSMC's capacity is increasingly consumed by AMD, Nvidia, and Broadcom's growing AI-related demand, that could mean tighter capacity or longer lead times for other chip designers who also compete with these three \u2014 for example, Qualcomm, Marvell, or Texas Instruments, all of whom compete directly with AMD or Broadcom. I don't have specific disclosures from those companies this period, so I can't say definitively that they're losing out \u2014 but it's a dynamic worth watching: TSMC's boom could be as much about capacity allocation and pricing power as it is about \"a rising tide lifting all boats.\"\n\n## Bottom Line\n\n- **AMD and Broadcom** are the clearest, most direct cases of dependency on TSMC's leading-edge manufacturing \u2014 TSMC's strong results are a meaningful positive signal for both.\n- **Nvidia** likely belongs in the same category, but I don't have current disclosures from Nvidia itself to confirm how this is playing out for them right now.\n- **Competitors further down the list** (Qualcomm, Marvell, TI, etc.) could face indirect pressure if TSMC's capacity gets increasingly allocated to AI-driven demand from AMD, Nvidia, and Broadcom \u2014 but I don't have specific evidence this is happening yet, so that's a watch item rather than a conclusion.",
+        "recall": {
+          "recall": 1.0,
+          "found": [
+            "AMD",
+            "AVGO",
+            "NVDA"
+          ],
+          "missed": []
+        },
+        "coverage": {
+          "coverage": 1.0,
+          "found": [
+            "AMD",
+            "AVGO",
+            "NVDA"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 5,
+          "correctness": 4,
+          "reasoning_depth": 4
+        }
+      },
+      "flat": {
+        "answer": "Based on these filings, AMD stands out clearly as a company whose leading-edge products depend heavily on TSMC's manufacturing.\n\nAMD's own 10-K spells this out directly: the company says it's \"presently focusing our 7nm and lower product microprocessor and GPU portfolio on TSMC's processes.\" That's a pretty direct admission that AMD's most advanced chips\u2014the ones built on cutting-edge nodes\u2014are essentially tied to TSMC's fabs. AMD also flags this as a risk factor, warning that if TSMC can't produce enough wafers at 7nm or smaller in sufficient quantity, \"it could have a material adverse effect\" on AMD's business. The filing goes further, noting that AMD relies on TSMC (along with UMC and other foundries) to deliver competitive performance, acceptable yields, and timely delivery, and that TSMC \"manufactures our newest IC products,\" which the filing distinguishes from AMD's other foundry relationships.\n\nBeyond AMD, the passages don't name other specific customers whose leading-edge products depend on TSMC in this same explicit way. TSMC's own filing does mention a \"Customer A\" that accounts for over 10% of net revenue in 2025, but the passage doesn't identify who that customer is or say anything about their reliance on TSMC's leading-edge nodes specifically\u2014just that they're a major revenue source.\n\nSo to directly answer your question: among what's available here, AMD is the one company that explicitly and specifically describes its most advanced products as dependent on TSMC's manufacturing capabilities. The filings don't give enough detail to characterize this same dependency for other customers, even though TSMC likely has other major customers in similar positions\u2014that information just isn't spelled out in what's here.",
+        "recall": {
+          "recall": 0.3333333333333333,
+          "found": [
+            "AMD"
+          ],
+          "missed": [
+            "AVGO",
+            "NVDA"
+          ]
+        },
+        "coverage": {
+          "coverage": 0.3333333333333333,
+          "found": [
+            "AMD"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 2,
+          "correctness": 5,
+          "reasoning_depth": 2
+        }
+      },
+      "winner": "graph",
+      "rationale": "System A surfaces all three key entities (AMD, AVGO, NVDA) plus reasons about competitive/capacity dynamics, while System B stays narrowly grounded in filings and only substantively covers AMD."
+    },
+    {
+      "id": "amd-share-gain",
+      "trigger": "AMD",
+      "question": "If AMD keeps gaining share in AI accelerators, which competitor is most at risk and which manufacturing partner benefits either way?",
+      "expected": [
+        "NVDA",
+        "TSM"
+      ],
+      "why": "NVDA is the at-risk rival; TSMC benefits regardless of who wins.",
+      "graph": {
+        "answer": "# AMD's AI Accelerator Momentum: Who Wins, Who Loses\n\n## The Most At-Risk Competitor: NVIDIA\n\nIf AMD keeps taking share in AI accelerators, **NVIDIA is the name most directly in the crosshairs**. AMD and NVIDIA are the two dominant players building GPUs for AI workloads, and they compete head-to-head for the same customers \u2014 cloud providers, hyperscalers, and enterprises building out AI infrastructure. This isn't a case where both companies can simply grow together; every AI accelerator deal AMD wins is a deal NVIDIA doesn't get. That makes this a direct, first-order hit rather than some indirect ripple.\n\nIt's worth noting that NVIDIA's most recent disclosure was just an executive transition (a senior sales leader retiring, replaced by a Microsoft veteran) \u2014 there's no fresh earnings commentary suggesting NVIDIA is stumbling on its own. So today, NVIDIA's risk here isn't about their own business softening; it's purely about competitive share dynamics if AMD's product roadmap and customer wins keep gathering steam. Worth watching closely, but not yet showing up as a self-inflicted problem in their own disclosures.\n\nA secondary point: Intel is also a competitor to both AMD and NVIDIA in adjacent chip categories, but Intel's exposure to the AI-accelerator fight specifically is smaller than NVIDIA's \u2014 that market isn't Intel's main battleground the way it is for the other two. So I'd flag Intel as a minor, secondary concern rather than the main event.\n\n## The Manufacturing Partner That Wins Either Way: TSMC (TSM)\n\nHere's the more interesting dynamic: **TSMC benefits regardless of whether AMD or NVIDIA wins the AI accelerator race**, because TSMC manufactures chips for both of them. AMD relies on TSMC for its advanced chip production, and so does NVIDIA. TSMC essentially gets paid on the volume of advanced AI chips shipped industry-wide \u2014 it doesn't really matter to them which brand name is on the box.\n\nThis is reinforced by TSMC's own recent numbers, which were genuinely strong: June 2026 revenue jumped nearly 68% year-over-year, capping off a robust first half of the year with revenue up over 35% versus a year earlier. That kind of sustained growth points to heavy, broad-based demand for advanced/AI-related chips \u2014 consistent with a \"picks and shovels\" position where TSMC profits from the overall AI buildout rather than betting on a single winner. This is a genuinely upbeat data point, not just a neutral filing.\n\nTwo caveats on the manufacturing side:\n- **GlobalFoundries and United Microelectronics** also supply to AMD, but their role appears smaller/more specialized (likely legacy or lower-leading-edge nodes) \u2014 they'd see some benefit from AMD's growth, but I wouldn't expect it to be as pronounced as TSMC's exposure, since TSMC is the primary partner for AMD's most advanced, highest-value chips.\n- **Samsung Electronics** supplies to both AMD and NVIDIA as well, similar to TSMC's dual exposure \u2014 so it's a secondary beneficiary in the same \"wins either way\" category, just with less confirmed prominence in leading-edge AI chip production than TSMC.\n\n## What I Can't Tell You Yet\n\nI don't have any recent earnings commentary specifically from NVIDIA, Intel, GlobalFoundries, or Samsung that would let me say whether they're currently *feeling* pressure from AMD's gains \u2014 the disclosures on hand for those companies are either routine governance items or, in NVIDIA's case, an executive change with no financial detail. So the \"at risk\" call on NVIDIA is a structural/competitive argument based on how directly their businesses overlap, not something I can back up with a downbeat earnings tone from NVIDIA itself yet. Worth keeping an eye on NVIDIA's next earnings call for actual confirmation of share pressure.",
+        "recall": {
+          "recall": 1.0,
+          "found": [
+            "NVDA",
+            "TSM"
+          ],
+          "missed": []
+        },
+        "coverage": {
+          "coverage": 1.0,
+          "found": [
+            "NVDA",
+            "TSM"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 5,
+          "correctness": 3,
+          "reasoning_depth": 5
+        }
+      },
+      "flat": {
+        "answer": "# AMD's AI Accelerator Gains: Who's at Risk, Who Benefits\n\nBased on these filings, here's how the competitive picture shapes up:\n\n**Nvidia looks like the most exposed competitor.** AMD's own 10-K explicitly names Nvidia as leveraging \"its market position\" in ways that create competitive pressure, and separately identifies Nvidia as \"the discrete GPU market share leader.\" Nvidia's own filing confirms it views AMD as a direct competitor in \"GPUs, CPUs, DPUs, embedded SoCs, and other accelerated, AI computing processor products\" \u2014 the exact category where AMD says it's pushing hard with its Instinct MI350X Series GPUs and a stated ambition to become the \"end-to-end AI leader.\" Since AI accelerators are the specific battleground both companies describe, sustained AMD share gains would most directly cut into Nvidia's territory there.\n\nWorth noting: Intel is also named as a competitor across CPUs, GPUs, and FPGAs, and AMD's filing describes Intel as aggressively pricing products to defend its position. But Intel's competitive pressure on AMD is described more broadly across product lines (client computing, embedded, gaming) rather than specifically in AI accelerators, so Nvidia is the more precise answer to \"who's at risk\" in that specific market.\n\n**On the manufacturing side, TSMC (TSM) is positioned as a likely beneficiary regardless of who wins the AI accelerator race.** TSMC's filing emphasizes that \"the shift of the global technology market to AI-related products, such as AI smartphones, AI PCs, and AI accelerators\" is a central theme shaping its business, and that keeping pace with customer needs in AI is \"critical\" to its competitive position. TSMC doesn't take sides between AMD and Nvidia in its filing \u2014 it frames itself as a foundry serving the broader AI accelerator boom. So whether AMD or Nvidia (or both) grow their AI chip businesses, TSMC's filing suggests it's positioned to benefit as the manufacturing partner underpinning that demand.\n\n**One caveat:** none of these filings explicitly state that TSMC manufactures for AMD or Nvidia specifically, or quantify how a shift in market share between the two chipmakers would flow through to TSMC's revenue. The filings describe TSMC's exposure to the AI accelerator trend in general terms, not a direct AMD-Nvidia-TSMC supply chain relationship \u2014 so treat that connection as directional rather than confirmed by these documents.",
+        "recall": {
+          "recall": 1.0,
+          "found": [
+            "NVDA",
+            "TSM"
+          ],
+          "missed": []
+        },
+        "coverage": {
+          "coverage": 1.0,
+          "found": [
+            "NVDA",
+            "TSM"
+          ]
+        },
+        "judge": {
+          "entity_coverage": 4,
+          "correctness": 5,
+          "reasoning_depth": 4
+        }
+      },
+      "winner": "flat",
+      "rationale": "System B covers more entities and reasons vividly, but introduces unverified specifics (TSMC revenue stats, Samsung/GF/UMC as AMD suppliers) that risk fabricated detail, whereas System A sticks closely to sourced filing language and explicitly flags what isn't confirmed."
+    }
+  ]
+}

@@ -3,9 +3,9 @@
 Unlike src/retrieval/reason.py (which requires a ticker up front and always
 does a single N-hop traversal around it), this hands the model the raw
 question plus a set of graph tools (src/mcp_server/graph_tools.py) and lets
-it decide what to look up — resolve a fuzzy company reference, traverse a
+it decide what to look up, resolve a fuzzy company reference, traverse a
 specific entity's neighborhood, or pull aggregate trending sentiment when no
-company is named — chaining multiple tool calls if needed. The graph still
+company is named, chaining multiple tool calls if needed. The graph still
 constrains what the model can claim (PRD 6.3): it only reasons over data
 those tool calls actually returned, never free-associated relationships.
 
@@ -33,14 +33,14 @@ tools that let you look up real, tracked business relationships (competitors, \
 suppliers, customers, ETF co-holders, sector peers) and recent \
 sentiment/summaries from company disclosures and earnings commentary. Use \
 them whenever a question is about specific companies, sectors, or market \
-moves — even if the user doesn't name an exact ticker, try search_entities \
+moves, even if the user doesn't name an exact ticker, try search_entities \
 first rather than guessing or answering from general knowledge. If the \
 question has no specific company in it (e.g. "what's trending" or "what \
 should I look into"), use get_trending instead of guessing a company.
 
 Never mention "graph," "database," "relationships graph," "nodes," "edges," \
 "confidence scores," "subgraph," "tool," "tool call," or similar backend/ \
-technical terms — describe things the way a human analyst would: "X is a \
+technical terms, describe things the way a human analyst would: "X is a \
 direct competitor of Y," "Z supplies key components to X," "the recent \
 earnings call had an upbeat tone because...". Never print a raw sentiment \
 or confidence number; translate it into plain language like "upbeat," \
@@ -48,7 +48,7 @@ or confidence number; translate it into plain language like "upbeat," \
 
 For each company you discuss, explain in plain terms whether the news is \
 likely good, bad, or roughly neutral for them, how strong that effect seems, \
-and why — including cases where a competitor's good news is actually bad \
+and why, including cases where a competitor's good news is actually bad \
 news for someone else (share loss, not shared upside), rather than assuming \
 everything moves together. If your tools don't surface enough to say \
 something meaningful, say so plainly instead of guessing. If the question \
@@ -125,7 +125,7 @@ async def answer_chat(question: str, history: list[dict] | None = None) -> dict:
     # Model kept requesting tools past MAX_TOOL_ROUNDS without settling.
     return {
         "question": question,
-        "answer": "I wasn't able to pull together a confident answer to that one — could you rephrase or narrow it down?",
+        "answer": "I wasn't able to pull together a confident answer to that one, could you rephrase or narrow it down?",
         "history": messages,
     }
 

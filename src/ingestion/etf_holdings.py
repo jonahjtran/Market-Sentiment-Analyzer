@@ -5,6 +5,8 @@ Holdings give us `CO_HOLDS_ETF` edges: every pair of names an ETF holds is a
 center ETFs whose members overlap the NVDA/AMD/TSM trigger universe.
 """
 
+from __future__ import annotations
+
 import time
 from pathlib import Path
 

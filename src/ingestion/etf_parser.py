@@ -3,7 +3,7 @@
 An ETF holding two names is a weak, mechanical peer signal (PRD edge-weight
 prior 0.2-0.3). A full ETF would produce O(n^2) pairs, so v1 restricts edges to
 the intersection of each ETF's holdings with our tracked universe (edgar_client
-.TICKERS) — that keeps the graph focused on the NVDA/AMD/TSM neighborhood and
+.TICKERS), that keeps the graph focused on the NVDA/AMD/TSM neighborhood and
 bounded in size. Widen this in Phase 8 when scaling coverage.
 """
 

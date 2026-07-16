@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+/* ─── Cascade design tokens ────────────────────────────────────────────────
+   Dark-first. Data colors are validated (dataviz six-checks, surface #0b0e14):
+   · sentiment diverging  #0ea371 / #64748b / #e5484d   (marks)
+   · edge categorical     #3987e5 / #d95926 / #9085e9 / #c98500
+   Brand aurora (cyan→violet) is chrome-only, never encodes data.           */
+
+:root {
+  --surface-0: #07090d;
+  --surface-1: #0b0e14;
+  --surface-2: #11151d;
+  --surface-3: #171c26;
+  --border-subtle: #1c222e;
+  --border-strong: #2a3140;
+
+  --text-primary: #f2f4f8;
+  --text-secondary: #9aa3b5;
+  --text-muted: #5c6577;
+
+  --brand-cyan: #22d3ee;
+  --brand-violet: #a78bfa;
+
+  /* sentiment, mark colors (validated) + brighter text-safe variants */
+  --pos: #0ea371;
+  --neu: #64748b;
+  --neg: #e5484d;
+  --pos-text: #34d399;
+  --neg-text: #f87171;
+
+  /* edge categorical (validated, fixed order) */
+  --edge-supply: #3987e5;
+  --edge-compete: #d95926;
+  --edge-etf: #9085e9;
+  --edge-peer: #c98500;
+}
+
+@theme inline {
+  --color-surface-0: var(--surface-0);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--border-subtle);
+  --color-line-strong: var(--border-strong);
+  --color-ink: var(--text-primary);
+  --color-ink-2: var(--text-secondary);
+  --color-ink-3: var(--text-muted);
+  --color-brand: var(--brand-cyan);
+  --color-brand-2: var(--brand-violet);
+  --color-pos: var(--pos);
+  --color-neu: var(--neu);
+  --color-neg: var(--neg);
+  --color-pos-text: var(--pos-text);
+  --color-neg-text: var(--neg-text);
+  --color-edge-supply: var(--edge-supply);
+  --color-edge-compete: var(--edge-compete);
+  --color-edge-etf: var(--edge-etf);
+  --color-edge-peer: var(--edge-peer);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-instrument);
+  --font-mono: var(--font-jetbrains);
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--surface-1);
+  color: var(--text-primary);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--brand-cyan) 30%, transparent);
+}
+
+/* thin, unobtrusive scrollbars for panels */
+.slim-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+.slim-scroll::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+.slim-scroll { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+
+/* ─── motion ─── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+.anim-fade-up { animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.anim-fade-in { animation: fade-in 0.6s ease both; }
+.delay-1 { animation-delay: 80ms; }
+.delay-2 { animation-delay: 160ms; }
+.delay-3 { animation-delay: 240ms; }
+.delay-4 { animation-delay: 320ms; }
+
+/* streaming status shimmer */
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--text-muted) 30%,
+    var(--text-primary) 50%,
+    var(--text-muted) 70%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 1.8s linear infinite;
+}
+
+/* blinking caret on streaming answers */
+.stream-caret::after {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--brand-cyan);
+  border-radius: 1px;
+  animation: pulse-dot 1s ease-in-out infinite;
+}
+
+/* aurora glow used behind heroes/panels, chrome, not data */
+.aurora {
+  background:
+    radial-gradient(42% 55% at 22% 30%, color-mix(in oklab, var(--brand-cyan) 14%, transparent) 0%, transparent 100%),
+    radial-gradient(40% 50% at 78% 25%, color-mix(in oklab, var(--brand-violet) 13%, transparent) 0%, transparent 100%),
+    radial-gradient(50% 60% at 55% 80%, color-mix(in oklab, #0ea371 7%, transparent) 0%, transparent 100%);
+}
+
+/* faint blueprint grid (Dovetail-style) */
+.blueprint {
+  background-image:
+    linear-gradient(var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 35%, black 35%, transparent 75%);
+}
+
+/* markdown body inside chat bubbles */
+.prose-chat {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-primary);
+}
+.prose-chat h1, .prose-chat h2, .prose-chat h3 {
+  font-weight: 600;
+  margin: 1.1em 0 0.45em;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+.prose-chat p { margin: 0.55em 0; }
+.prose-chat strong { font-weight: 600; color: var(--text-primary); }
+.prose-chat ul, .prose-chat ol { margin: 0.55em 0; padding-left: 1.25em; }
+.prose-chat ul { list-style: disc; }
+.prose-chat ol { list-style: decimal; }
+.prose-chat li { margin: 0.25em 0; }
+.prose-chat hr { border-color: var(--border-subtle); margin: 1em 0; }
+.prose-chat code {
+  font-family: var(--font-jetbrains), monospace;
+  font-size: 0.85em;
+  background: var(--surface-3);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade-up, .anim-fade-in, .shimmer-text, .stream-caret::after { animation: none; }
+  html { scroll-behavior: auto; }
+}

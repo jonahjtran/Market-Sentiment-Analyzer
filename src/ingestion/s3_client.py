@@ -1,3 +1,4 @@
+from __future__ import annotations
 import os
 from pathlib import Path
 
@@ -13,6 +14,7 @@ PREFIXES = {
     "filings": "filings/",
     "transcripts": "transcripts/",
     "etf_holdings": "etf-holdings/",
+    "news": "news/",
 }
 
 _client = boto3.client("s3", region_name=os.environ.get("AWS_REGION", "us-east-1"))

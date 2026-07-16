@@ -1,8 +1,8 @@
-"""Flat RAG baseline (PRD Phase 5 — comparator for the graph RAG demo).
+"""Flat RAG baseline (PRD Phase 5, comparator for the graph RAG demo).
 
-Chunks the same filings/transcripts used by the graph pipeline into a
+Chunks the same filings/transcripts/news used by the graph pipeline into a
 ChromaDB collection with standard embeddings and answers questions via plain
-vector similarity search — no entity graph, no relationship traversal. This
+vector similarity search, no entity graph, no relationship traversal. This
 is the "regular RAG fails" side of the Phase 6 side-by-side demo: it can only
 surface whatever chunks are semantically close to the question, so it has no
 structural way to reach entities that aren't named in the trigger document's
@@ -14,6 +14,9 @@ Run:
   python -m src.retrieval.flat_rag query "How does NVDA's earnings affect AMD, TSMC, and data center REITs?"
 """
 
+from __future__ import annotations
+
+import json
 import os
 import sys
 from pathlib import Path
@@ -36,7 +39,7 @@ CHUNK_SIZE = 1500
 CHUNK_OVERLAP = 200
 
 CHROMA_DIR = Path("/tmp/flat_rag_chroma")
-COLLECTION_NAME = "filings_and_transcripts"
+COLLECTION_NAME = "filings_transcripts_news"
 
 _client: Anthropic | None = None
 
@@ -67,20 +70,43 @@ def _get_collection():
     return client.get_or_create_collection(COLLECTION_NAME)
 
 
+def _news_documents(key: str, ticker: str) -> list[tuple[str, str, dict]]:
+    """Yield (id, document, metadata) tuples for a news JSON file.
+
+    News is indexed per-article (title + description) so the baseline sees the
+    same news the graph does, keying each document by article_url to mirror the
+    Article node's source_doc. A short news blurb is one chunk, not many.
+    """
+    out = []
+    for article in json.loads(read_text(key)):
+        url = article.get("article_url")
+        text = "\n".join(p for p in (article.get("title"), article.get("description")) if p).strip()
+        if not url or not text:
+            continue
+        out.append((url, text, {"source_doc": url, "ticker": ticker}))
+    return out
+
+
 def build_index() -> int:
-    """Chunk every filing/transcript in S3 and load them into ChromaDB."""
+    """Chunk every filing/transcript/news item in S3 and load them into ChromaDB."""
     collection = _get_collection()
 
     ids: list[str] = []
     documents: list[str] = []
     metadatas: list[dict] = []
 
-    for prefix in ("filings", "transcripts"):
+    for prefix in ("filings", "transcripts", "news"):
         for key in list_objects(prefix):
             if key.endswith("/"):
                 continue
             ticker = _ticker_from_key(key)
             if ticker not in TICKERS:
+                continue
+            if prefix == "news":
+                for doc_id, doc, meta in _news_documents(key, ticker):
+                    ids.append(doc_id)
+                    documents.append(doc)
+                    metadatas.append(meta)
                 continue
             text = html_to_text(read_text(key))
             for i, chunk in enumerate(_chunk_text(text)):
@@ -107,8 +133,9 @@ def build_index() -> int:
 
 _FLAT_RAG_PROMPT = """\
 You are a markets analyst answering an investor's question using only the \
-passages below, pulled from company filings and earnings releases (internal \
-research notes — do not describe how these were found, e.g. never mention \
+passages below, pulled from company filings, earnings releases, and news \
+articles (internal \
+research notes, do not describe how these were found, e.g. never mention \
 "excerpts," "semantic similarity search," "retrieved passages," or similar \
 backend/technical terms).
 
@@ -118,7 +145,7 @@ Passages:
 Question: {question}
 
 Write a clear, conversational answer for a self-directed investor who is not \
-a data engineer. Base your answer only on what these passages actually say — \
+a data engineer. Base your answer only on what these passages actually say, \
 don't infer connections between companies that the passages themselves don't \
 state. If the passages don't give you enough to answer part of the question, \
 say so plainly rather than guessing, but phrase it naturally (e.g. "the \

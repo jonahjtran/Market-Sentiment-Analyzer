@@ -4,7 +4,7 @@ Wraps the existing retrieval functions (src/retrieval/subgraph.py) as MCP
 tools rather than pre-classifying a question and picking a retrieval path
 for it. The LLM decides which tool(s) to call, with what arguments, and can
 chain calls (e.g. search_entities to resolve a fuzzy company reference, then
-get_subgraph on the result) — the graph still constrains what it can see,
+get_subgraph on the result), the graph still constrains what it can see,
 but the *decision* of what to look up lives in the model's tool-use loop,
 not in a pre-step here.
 
@@ -43,7 +43,7 @@ _DISTINCT_ENTITY_NAMES_QUERY = "MATCH (e:Entity) RETURN DISTINCT e.name AS name"
 def _known_entity_names() -> list[str]:
     """Entity.name values as they actually exist in the graph.
 
-    Not assumed to be tickers — filing-derived entities are stored under
+    Not assumed to be tickers, filing-derived entities are stored under
     suffix-stripped company names (see canonical_name() in load_graph.py),
     so a fuzzy search has to match against real graph state, not just the
     static ticker list.
@@ -58,10 +58,10 @@ def search_entities(query: str) -> list[str]:
     """Find companies in the graph matching a free-text query.
 
     Use this first whenever the user's question doesn't give you an exact
-    ticker or exact company name — e.g. "the company that makes GPUs",
+    ticker or exact company name, e.g. "the company that makes GPUs",
     partial names, misspellings, or informal references. Returns the actual
     Entity names as stored in the graph (tickers like "NVDA" or company
-    names like "Intel" depending on how that entity was ingested) — always
+    names like "Intel" depending on how that entity was ingested), always
     use one of these returned names, not a guess, when calling get_subgraph.
 
     Returns an empty list if nothing matches; try a broader or different
@@ -91,7 +91,7 @@ def get_subgraph_tool(ticker: str, hops: int = DEFAULT_HOPS) -> dict:
 def get_trending(direction: str = "up", limit: int = 5) -> dict:
     """Get the companies with the most notable aggregate recent sentiment.
 
-    Use this when the question names no specific company — "what's
+    Use this when the question names no specific company, "what's
     trending", "what's trending down", "what should I look into", "what's
     getting a lot of attention". `direction` must be one of:
       - "up": highest average sentiment (most positive)

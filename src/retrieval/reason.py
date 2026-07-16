@@ -1,14 +1,16 @@
-"""Graph RAG reasoning/synthesis step (PRD Phase 4 — Approach A core).
+"""Graph RAG reasoning/synthesis step (PRD Phase 4, Approach A core).
 
 Takes the N-hop subgraph + supporting articles from subgraph.py and hands
-them to the LLM to reason about sentiment propagation. The LLM — not a
-precomputed formula — judges which relationships matter and the likely
+them to the LLM to reason about sentiment propagation. The LLM, not a
+precomputed formula, judges which relationships matter and the likely
 direction/magnitude of impact (PRD 4.4, 6.3). Graph structure still bounds
 what the LLM sees: it only reasons over edges and articles that were
 actually retrieved from Neo4j, not free-associated from text.
 
 Run: python -m src.retrieval.reason NVDA "How does NVDA's earnings affect AMD, TSMC, and data center REITs?" [hops]
 """
+
+from __future__ import annotations
 
 import os
 import sys
@@ -26,17 +28,17 @@ MAX_TOKENS = 2000
 
 _REASONING_PROMPT = """\
 You are a markets analyst explaining to an investor how a company's news might \
-ripple out to related companies — competitors, suppliers, and customers. You've \
+ripple out to related companies, competitors, suppliers, and customers. You've \
 been given a set of known business relationships for {ticker} and some recent \
 company disclosures/earnings commentary to work from.
 
-Known business relationships (internal research notes — do not quote this \
+Known business relationships (internal research notes, do not quote this \
 list or its format back to the reader; treat confidence as your own certainty \
 about whether the relationship is real, not a measure of impact size):
 {edges}
 
 Recent disclosures and earnings commentary per company (internal research \
-notes — a numeric score reflects how positive or negative the tone was, but \
+notes, a numeric score reflects how positive or negative the tone was, but \
 never surface the raw number itself; translate it into plain language like \
 "upbeat," "mixed," or "no notable news"):
 {articles}
@@ -44,7 +46,7 @@ never surface the raw number itself; translate it into plain language like \
 Question: {question}
 
 Write a clear, conversational answer for a self-directed investor who is not \
-a data engineer — never mention "graph," "database," "relationships graph," \
+a data engineer, never mention "graph," "database," "relationships graph," \
 "nodes," "edges," "confidence scores," "subgraph," or similar backend/technical \
 terms, and never print raw confidence or sentiment numbers. Instead, describe \
 things the way a human analyst would: "X is a direct competitor of Y," "Z \
@@ -54,13 +56,16 @@ because...".
 For each company you discuss, explain in plain terms whether the news is \
 likely good, bad, or roughly neutral for them, how strong that effect seems \
 (e.g. "this hits them directly," "this is a smaller, secondary effect"), and \
-why — including cases where a competitor's good news is actually bad news for \
+why, including cases where a competitor's good news is actually bad news for \
 someone else (share loss, not shared upside), rather than assuming everything \
 moves together. Ground each claim in the specific relationship or news item \
 behind it, described in plain English, so the reader understands your \
 reasoning without needing to know how you retrieved it. If you don't have \
 enough information to say something meaningful about part of the question, \
 say so plainly instead of guessing.
+
+Write in plain prose. Do not use em dashes anywhere in your answer; use \
+commas, periods, colons, or parentheses instead.
 """
 
 _client: Anthropic | None = None

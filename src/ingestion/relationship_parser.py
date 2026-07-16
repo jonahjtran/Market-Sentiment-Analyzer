@@ -7,6 +7,8 @@ written in prose and vary filing to filing. Triples land in a normalized shape
 that Phase 2 (graph construction) loads straight into Neo4j.
 """
 
+from __future__ import annotations
+
 import json
 import os
 import re
@@ -143,7 +145,7 @@ def parse_all_filings() -> list[dict]:
 
 
 def list_filing_articles() -> list[dict]:
-    """Article-node metadata for every filing in S3 (no sentiment — see PRD
+    """Article-node metadata for every filing in S3 (no sentiment, see PRD
     note: financial statements are factual, not sentiment-bearing; only
     earnings releases/news get scored, in score_sentiment.py).
 

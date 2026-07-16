@@ -1,5 +1,7 @@
 """Pull latest 10-K filings from SEC EDGAR and upload the raw documents to S3."""
 
+from __future__ import annotations
+
 import sys
 import time
 from pathlib import Path
